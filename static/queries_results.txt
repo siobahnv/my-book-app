@@ -1,0 +1,65 @@
+In case I need to reference later, playing with queries:
+
+(env) vagrant@vagrant:~/src/book-recommender$ python3 -i model.py 
+Connected to DB.
+/home/vagrant/src/book-recommender/env/lib/python3.6/site-packages/psycopg2/__init__.py:144: UserWarning: The psycopg2 wheel package will be renamed from release 2.8; in order to keep installing from binary please use "pip install psycopg2-binary" instead. For details see: <http://initd.org/psycopg/docs/install.html#binary-install-from-pypi>.
+  """)
+Deleting tables
+>>> user = User.query.filter(User.user_id==1).one()
+>>> user
+<User user_id=1 email=test@test.com>
+>>> user.booklists
+[<Booklist booklist_id=1>]
+>>> user2 = User.query.filter(User.user_id==2).one()
+>>> user2
+<User user_id=2 email=gmail.com>
+>>> user2.booklists
+[<Booklist booklist_id=2>]
+>>> user.booklists.books
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'InstrumentedList' object has no attribute 'books'
+>>> user.booklists.booklist_id
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'InstrumentedList' object has no attribute 'booklist_id'
+>>> booklist = user.booklists
+>>> booklist
+[<Booklist booklist_id=1>]
+>>> booklist.booklist_id
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'InstrumentedList' object has no attribute 'booklist_id'
+>>> BookList.query.filter(BookList.user_id==user.user_id)
+<flask_sqlalchemy.BaseQuery object at 0x7fe35d074630>
+>>> BookList.query.filter(BookList.user_id==user.user_id).all()
+[<Booklist booklist_id=1>]
+>>> BookList.query.filter(BookList.user_id==user2.user_id).all()
+[<Booklist booklist_id=2>]
+>>> mybooklist = BookList.query.filter(BookList.user_id==user2.user_id).all()
+>>> mybooklist
+[<Booklist booklist_id=2>]
+>>> mybooklist = BookList.query.filter(BookList.user_id==user1.user_id).all()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'user1' is not defined
+>>> mybooklist = BookList.query.filter(BookList.user_id==user.user_id).all()
+>>> mybooklist
+[<Booklist booklist_id=1>]
+>>> mybooklist.booklist_id
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'booklist_id'
+>>> mybooklist[0].booklist_id
+1
+>>> books = Books.query.filter(Books.booklist_id==mybooklist[0].booklist_id)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'Books' is not defined
+>>> books = Book.query.filter(Book.booklist_id==mybooklist[0].booklist_id)
+>>> books
+<flask_sqlalchemy.BaseQuery object at 0x7fe35d074940>
+>>> books = Book.query.filter(Book.booklist_id==mybooklist[0].booklist_id).all()
+>>> books
+[<Book book_id=1 title=fake book 1>, <Book book_id=2 title=fake book 2>, <Book book_id=3 title=fake book 3>]
+>>> 

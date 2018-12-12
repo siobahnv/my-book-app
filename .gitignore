@@ -1,9 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# my stuff
+env/
+.vscode/
+__pycache__/
+*.pyc
+secrets.*
+
 # dependencies
-/node_modules
+/frontend/node_modules
 /.pnp
 .pnp.js
+*.pnp
 
 # testing
 /coverage
