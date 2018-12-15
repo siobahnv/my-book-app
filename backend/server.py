@@ -38,10 +38,21 @@ def booklist():
 
   print(books)
 
+  booklist = []
+  for book in books:
+    book = {
+      'book_id': book.book_id,
+      'title': book.title
+    }
+    booklist.append(book)
+
+  print(booklist)
+  return jsonify(booklist)
+
   # response = make_response(jsonify({'book1': 1, 'book2': 2}))
   # response.headers['Access-Control-Allow-Origin'] = '*' # fine for testing...
   # return response
-  return jsonify({'book1': 1, 'book2': 2})
+  # return jsonify({'book1': 1, 'book2': 2})
 
 @app.route("/book/<book_id>")
 def get_book(book_id):
