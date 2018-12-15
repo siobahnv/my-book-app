@@ -30,3 +30,9 @@
         transform: rotate(360deg);
     }
 }
+
+.Booklist {
+    list-style: none;
+    /* may want to change this later: */
+    margin: 10px;
+}

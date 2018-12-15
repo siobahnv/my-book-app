@@ -21,16 +21,19 @@ class BooklistComponent extends Component {
 
   render() {
     const { books, isLoading } = this.state;
-    const listBooks = books.map((b) => <li key={b.book_id}>{b.title}</li>);
+    const listBooks = books.map((b) => <li key={b.book_id}>{b.title} <i class="fa fa-trash" aria-hidden="true"></i></li>);
 
     if (isLoading) {
       return <p>Loading...</p>
     }
 
-    console.log(books);
+    if (books===[]) {
+        return <p>You have zero books in your list.</p>
+    }
 
     return (
       <div className="Booklist">
+        <p>Title</p>
         {listBooks}
       </div>
     );
