@@ -5,7 +5,10 @@ class AuthMenu extends Component {
   render() {
     return (
       <div className="sign-in">
-        <button>Sign In</button>
+        <form method="POST">
+          <input type="text" name="username" placeholder="username"></input>
+          <button onClick={this.login}>Sign In</button>
+        </form>
       </div>
     );
   }

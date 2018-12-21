@@ -16,18 +16,24 @@ app.secret_key = my_secret_key
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-@app.route("/")
+@app.route('/')
 def index():
-  """Homepage."""
-  session['user_id'] = 1 # fix later
+    if 'username' in session:
+        return 'Logged in'
+    return 'You are not logged in'
 
-  if session.get('user_id'):
-    print("homepage")
-    print(session.get('user_id'))
-    return "homepage"
-  else:
-    print("login")
-    return "login"
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for('index'))
+    return 'logged in'
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 @app.route("/booklist")
 @cross_origin()
@@ -37,7 +43,12 @@ def booklist():
   if session.get('user_id'):
     print(session['user_id'])
   else:
-    print("No session user")
+    print("No session user") # this prints...
+
+  if 'user_id' in session:
+    print("User!")
+  else:
+    print("No user?")
   # TODO: get "user" from session; for phase 0/1 store booklist_id as well as user_id?
   # user = User.query.filter(User.user_id==2).one()
   # mybooklist = BookList.query.filter(BookList.user_id==2).all()
