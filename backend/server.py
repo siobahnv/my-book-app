@@ -7,33 +7,63 @@ from secrets import *
 from flask import (Flask, make_response, render_template, redirect, request, flash,
                    session, jsonify, url_for)
 
+# from flask.ext.session.SqlAlchemySessionInterface import Session
+# from flask.ext.session import Session
+# from flask_session import Session
+
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 
+# SESSION_TYPE = 'redis' # screw redis....
+# app.config.from_object(__name__)
+# Session(app)
+
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = my_secret_key
 
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r"http://localhost:3000" }})
+
+@app.after_request
+def after(response):
+  response.headers.add('Access-Control-Allow-Credentials', 'true')
+  return response
 
 @app.route('/')
+@cross_origin()
 def index():
     if 'username' in session:
         return 'Logged in'
     return 'You are not logged in'
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
+@cross_origin()
 def login():
-    if request.method == 'POST':
-        session['username'] = request.form['username']
-        return redirect(url_for('index'))
-    return 'logged in'
+    print("woooooooooooooooo")
+    print(request)
+    if 'username' in session:
+      print("Logout")
+      session.pop('username', None)
+      return "logged out successfully"
+    else:
+      print("do it come here...")
+      session['username'] = request.form['username']
+      print(session['username'])
+      session['user_id'] = 1
+      return "logged in successfully"
 
-@app.route('/logout')
-def logout():
-    # remove the username from the session if it's there
-    session.pop('username', None)
-    return redirect(url_for('index'))
+@app.route('/whoami')
+@cross_origin()
+def whoami():
+  print(request.headers)
+  return jsonify ({ 'username' : session.get('username', 'nobody') })
+
+# @app.route('/logout')
+# @cross_origin()
+# def logout():
+#     # remove the username from the session if it's there
+#     session.pop('username', None)
+#     return redirect(url_for('index'))
 
 @app.route("/booklist")
 @cross_origin()
