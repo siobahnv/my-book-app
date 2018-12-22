@@ -12,20 +12,35 @@ class BooklistComponent extends Component {
             error: null,
             isLoading: false
         }
+
+        this.refresh = this.refresh.bind(this)
     }
 
     componentDidMount() {
+      this.refresh()
+    }
+
+    refresh() {
         this.setState({ isLoading: true});
 
-        fetch('http://localhost:5000/booklist')
+        fetch('http://localhost:5000/booklist', {
+            credentials: 'include',
+        })
         .then(response => response.json())
         .then(data => this.setState({ books: data, isLoading: false }))
         .catch((error) => {this.setState({isLoading: true, error})});
     }
 
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.books !== prevProps.books) {
+    //         // do something
+    //         this.setState({books: this.props.books})
+    //     }
+    // }
+
     render() {
         const { books, error, isLoading } = this.state;
-        const listBooks = books.map((b) => <li key={b.book_id}>{b.title} <TrashButton book_id={b.book_id}/></li>);
+        const listBooks = books.map((b) => <li key={b.book_id}>{b.title} <TrashButton book_id={b.book_id} callback={this.refresh}/></li>);
 
         if (error) {
             return <div>Error: {error.message}</div>;
@@ -35,7 +50,7 @@ class BooklistComponent extends Component {
             return <p>Loading...</p>
         }
 
-        if (books===[]) {
+        if (books.length == 0) {
             return (
                 <div className="Booklist">
                     <p>You have zero books in your list.</p>

@@ -16,18 +16,6 @@ class AuthMenu extends Component {
   handleLogin(e) {
     e.preventDefault();
     const data = new FormData(e.target);
-    alert("WOoo");
-
-    // fetch('http://localhost:5000/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     username: e.target.value,
-    //   })
-    // })
 
     fetch('http://localhost:5000/login', {
       credentials: 'include',
@@ -38,10 +26,6 @@ class AuthMenu extends Component {
       credentials: 'include',
     }))
     .then(data => this.setState( { username : data.username }));
-
-    // this.setState(state => ({
-    //   isSubmit: !state.isSubmit
-    // }));
   }
 
   render() {
@@ -49,10 +33,8 @@ class AuthMenu extends Component {
       <div className="sign-in">
         <form method="POST" action="http://localhost:5000/login" id="userlogin" onSubmit={this.handleLogin}>
           <input type="text" name="username" placeholder="username"></input>
-          {/* <button onClick={this.handleLogin}>
-            {this.state.isSubmit ? 'Sign In' : 'Logout'}
-          </button> */}
-          <button>{this.state.username === "not logged in" ? "Log In" : "Log Out " + this.state.username}</button>
+          <input type="text" name="password" placeholder="password"></input>
+          <button>{this.state.username === "not logged in" ? "Log In" : "Log Out "}</button>
         </form>
       </div>
     );

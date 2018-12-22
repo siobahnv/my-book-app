@@ -27,9 +27,13 @@ class TrashButton extends Component {
         // this.setState({book_id: this.props.book_id});
         alert("Trash!");
 
-        fetch('http://localhost:5000/book/<' + this.props.book_id + '>/delete')
+        fetch('http://localhost:5000/book/' + this.props.book_id + '/delete', {
+            credentials: 'include',
+        })
         .then(response => response.json())
         // .then(data => this.setState({ books: data, isLoading: false }))
+        .then(data => console.log(data))
+        .then(() => this.props.callback())
         .catch((error) => {this.setState({isLoading: true, error})});
       }
   

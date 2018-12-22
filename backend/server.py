@@ -24,6 +24,12 @@ app.secret_key = my_secret_key
 
 cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r"http://localhost:3000" }})
 
+def get_booklist_from_uid():
+  user_id = session['user_id']
+  user = User.query.filter(User.user_id==user_id).one()
+  user_booklist_id = user.booklists[0].booklist_id
+  return user_booklist_id
+
 @app.after_request
 def after(response):
   response.headers.add('Access-Control-Allow-Credentials', 'true')
@@ -39,23 +45,23 @@ def index():
 @app.route('/login', methods=['POST'])
 @cross_origin()
 def login():
-    print("woooooooooooooooo")
-    print(request)
+    # print(request)
     if 'username' in session:
       print("Logout")
       session.pop('username', None)
       return "logged out successfully"
     else:
-      print("do it come here...")
       session['username'] = request.form['username']
-      print(session['username'])
-      session['user_id'] = 1
+      session['password'] = request.form['password']
+      print("logging in: " + session['username'])
+      session['user_id'] = 1 # TODO: fix later
       return "logged in successfully"
 
 @app.route('/whoami')
 @cross_origin()
 def whoami():
-  print(request.headers)
+  # print(request.headers)
+  # print("Whoami: " + session['username'])
   return jsonify ({ 'username' : session.get('username', 'nobody') })
 
 # @app.route('/logout')
@@ -70,51 +76,55 @@ def whoami():
 def booklist():
   """Returns booklist."""
   
-  if session.get('user_id'):
-    print(session['user_id'])
-  else:
-    print("No session user") # this prints...
-
-  if 'user_id' in session:
-    print("User!")
+  if 'username' in session:
+    print("Booklist user: " + session['username'])
+    # print("user id: " + session['user_id'])
   else:
     print("No user?")
-  # TODO: get "user" from session; for phase 0/1 store booklist_id as well as user_id?
-  # user = User.query.filter(User.user_id==2).one()
-  # mybooklist = BookList.query.filter(BookList.user_id==2).all()
-  # books = Book.query.filter(Book.booklist_id==mybooklist[0].booklist_id).all()
-  user = User.query.filter(User.user_id==1).one()
-  user_booklist_id = user.booklists[0].booklist_id
-  books = Book.query.filter(Book.booklist_id==user_booklist_id).all()
+  
+  if 'user_id' in session:
+    print("There's a user id! " + str(session['user_id']))
 
-  booklist = []
-  for book in books:
-    book = {
-      'book_id': book.book_id,
-      'title': book.title
-    }
-    booklist.append(book)
+    # TODO: get "user" from session; for phase 0/1 store booklist_id as well as user_id?
+    user_booklist_id = get_booklist_from_uid()
+    books = Book.query.filter(Book.booklist_id==user_booklist_id).all()
 
-  return jsonify(booklist)
+    booklist = []
+    for book in books:
+      book = {
+        'book_id': book.book_id,
+        'title': book.title
+      }
+      booklist.append(book)
+
+    return jsonify(booklist)
+
+  else:
+    return jsonify([])
 
   # response = make_response(jsonify({'book1': 1, 'book2': 2}))
   # response.headers['Access-Control-Allow-Origin'] = '*' # fine for testing...
   # return response
   # return jsonify({'book1': 1, 'book2': 2})
 
-@app.route("/book/<book_id>")
-def get_book(book_id):
-  """Returns a book."""
-  pass
+# @app.route("/book/<book_id>")
+# @cross_origin()
+# def get_book(book_id):
+#   """Returns a book."""
+#   pass
 
 @app.route("/book/<book_id>/delete")
+@cross_origin()
 def delete_book(book_id):
   """Removes a book from a list."""
 
-  # need to get booklist?
-  # delete book from booklist
+  user_booklist_id = get_booklist_from_uid()
+  book = Book.query.filter(Book.book_id==book_id, Book.booklist_id==user_booklist_id).one()
+  print(book)
+  db.session.delete(book)
+  db.session.commit()
 
-  pass
+  return jsonify("book deleted")
 
 if __name__ == "__main__":
     
