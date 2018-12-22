@@ -6,39 +6,22 @@ class TrashButton extends Component {
         super(props);
     
         this.state = {
-        //   book_id: '',
           error: null,
           isLoading: false
         }
       }
-    
-    //   componentDidMount() {
-    //     this.setState({ isLoading: true});
-    
-    //     fetch('http://localhost:5000/booklist')
-    //     .then(response => response.json())
-    //     .then(data => this.setState({ books: data, isLoading: false }))
-    //     .catch((error) => {this.setState({isLoading: true, error})});
-    //   }
 
     handleTrash = (e) => {
-        // do something
-        console.log(this.props.book_id);
-        // this.setState({book_id: this.props.book_id});
-        alert("Trash!");
-
         fetch('http://localhost:5000/book/' + this.props.book_id + '/delete', {
             credentials: 'include',
         })
         .then(response => response.json())
-        // .then(data => this.setState({ books: data, isLoading: false }))
         .then(data => console.log(data))
-        .then(() => this.props.callback())
+        .then(() => this.props.refreshBooklist())
         .catch((error) => {this.setState({isLoading: true, error})});
       }
   
     render() {
-        // const { book_id, error, isLoading } = this.state;
         const { error, isLoading } = this.state;
 
         if (error) {

@@ -13,9 +13,15 @@ class App extends Component {
     this.state = {
       username: "not logged in"
     }
+
+    this.refresh = this.refresh.bind(this)
   }
   
   componentDidMount() {
+    this.refresh()
+  }
+
+  refresh() {
     fetch('http://localhost:5000/whoami', {credentials: 'include'})
     .then(response => response.json())
     .then(data => this.setState( { username : data.username ? data.username : "not logged in" }))
@@ -27,7 +33,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <AuthMenu/>
+          <AuthMenu authenticating={this.refresh}/>
         </header>
         <div>
           { this.state.username }

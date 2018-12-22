@@ -7,17 +7,9 @@ from secrets import *
 from flask import (Flask, make_response, render_template, redirect, request, flash,
                    session, jsonify, url_for)
 
-# from flask.ext.session.SqlAlchemySessionInterface import Session
-# from flask.ext.session import Session
-# from flask_session import Session
-
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-
-# SESSION_TYPE = 'redis' # screw redis....
-# app.config.from_object(__name__)
-# Session(app)
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = my_secret_key
@@ -45,7 +37,6 @@ def index():
 @app.route('/login', methods=['POST'])
 @cross_origin()
 def login():
-    # print(request)
     if 'username' in session:
       print("Logout")
       session.pop('username', None)
@@ -60,8 +51,6 @@ def login():
 @app.route('/whoami')
 @cross_origin()
 def whoami():
-  # print(request.headers)
-  # print("Whoami: " + session['username'])
   return jsonify ({ 'username' : session.get('username', 'nobody') })
 
 # @app.route('/logout')
@@ -71,6 +60,24 @@ def whoami():
 #     session.pop('username', None)
 #     return redirect(url_for('index'))
 
+@app.route("/createBookList", methods=['POST'])
+@cross_origin()
+def create_book_list():
+
+  booktitle = request.form['booktitle']
+  print(booktitle)
+
+  # temporary list
+  booklist = []
+  user_booklist_id = get_booklist_from_uid()
+  book1 = Book(booklist_id=user_booklist_id, title="fake book 1")
+  book2 = Book(booklist_id=user_booklist_id, title="fake book 2")
+  book3 = Book(booklist_id=user_booklist_id, title="fake book 3")
+
+  print(book1)
+
+  pass
+
 @app.route("/booklist")
 @cross_origin()
 def booklist():
@@ -78,7 +85,6 @@ def booklist():
   
   if 'username' in session:
     print("Booklist user: " + session['username'])
-    # print("user id: " + session['user_id'])
   else:
     print("No user?")
   
@@ -101,11 +107,6 @@ def booklist():
 
   else:
     return jsonify([])
-
-  # response = make_response(jsonify({'book1': 1, 'book2': 2}))
-  # response.headers['Access-Control-Allow-Origin'] = '*' # fine for testing...
-  # return response
-  # return jsonify({'book1': 1, 'book2': 2})
 
 # @app.route("/book/<book_id>")
 # @cross_origin()

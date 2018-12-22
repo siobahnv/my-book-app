@@ -4,19 +4,33 @@ import '../static/App.css';
 class SearchComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      input: '',
+    };
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e) {
-    alert('The value is: ' + this.input.value);
     e.preventDefault();
+    // const value = e.target.value;
+    // alert(value);
+    const data = new FormData(e.target);
+    console.log(data)
+
+    // fetch('http://localhost:5000/createBookList', {
+    //   credentials: 'include',
+    //   method: 'POST',
+    //   body: data,
+    // })
   }
 
   render() {
     return (
       <div className="Search">
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" className="input" id="addInput" placeholder="Title..."/>
+        <form method="POST" action="http://localhost:5000/createBookList" onSubmit={this.handleSubmit}>
+          <input type="text" name="booktitle" className="input" placeholder="Title..."/>
           <input type="submit" value="Create List" />
         </form>
       </div>
