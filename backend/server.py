@@ -60,25 +60,35 @@ def whoami():
 #     session.pop('username', None)
 #     return redirect(url_for('index'))
 
-@app.route('/createBookList', methods=['POST'])
+@app.route('/createBookList', methods=['GET', 'POST'])
 @cross_origin()
 def create_book_list():
 
-  booktitle = request.form['booktitle']
-  print(booktitle)
+  if request.method == 'POST':
+    booktitle = request.form['booktitle']
+    print(booktitle)
+    return jsonify(booktitle)
+  else:
+    # temporary list
+    booklist = []
+    books = []
+    user_booklist_id = get_booklist_from_uid()
+    book1 = Book(booklist_id=user_booklist_id, book_id=1, title="fake book 1")
+    book2 = Book(booklist_id=user_booklist_id, book_id=2, title="fake book 2")
+    book3 = Book(booklist_id=user_booklist_id, book_id=3, title="fake book 3")
+    books.append(book1)
+    books.append(book2)
+    books.append(book3)
+    print(book1)
 
-  # temporary list
-  # booklist = []
-  # user_booklist_id = get_booklist_from_uid()
-  # book1 = Book(booklist_id=user_booklist_id, title="fake book 1")
-  # book2 = Book(booklist_id=user_booklist_id, title="fake book 2")
-  # book3 = Book(booklist_id=user_booklist_id, title="fake book 3")
+    for book in books:
+      book = {
+        'book_id': book.book_id,
+        'title': book.title
+      }
+      booklist.append(book)
 
-  # print(book1)
-
-  # return jsonify("booktile")
-  # pass
-  return "boottitle"
+    return jsonify(booklist)
 
 @app.route('/booklist')
 @cross_origin()
@@ -115,6 +125,21 @@ def booklist():
 # def get_book(book_id):
 #   """Returns a book."""
 #   pass
+
+@app.route('/book/save', methods=['POST'])
+@cross_origin()
+def save_book():
+  """Saves/adds a book from a list to a list."""
+
+  title = request.data.decode('UTF-8')
+
+  user_booklist_id = get_booklist_from_uid()
+  book = Book(booklist_id=user_booklist_id, title=title)
+  print(book)
+  db.session.add(book)
+  db.session.commit()
+
+  return jsonify("book saved")
 
 @app.route('/book/<book_id>/delete')
 @cross_origin()
