@@ -26,7 +26,7 @@ ReactDOM.render((
     <BrowserRouter>
         <Switch>
             <Route exact path="/" component={App}/>
-            <Route path="/createBookList" component={SearchListComponent}/>
+            <Route path="/createBookList" render={ (routeInfo, ...rest) => <SearchListComponent title={routeInfo.location.state.title}/> } />
         </Switch>
     </BrowserRouter>
     ), document.getElementById('root')

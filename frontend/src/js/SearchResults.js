@@ -38,7 +38,9 @@ class SearchListComponent extends Component {
         const { books, error, isLoading } = this.state;
         const listBooks = books.map((b) => <li key={b.book_id}>{b.title} <SaveButton title={b.title} refreshBooklist={this.refresh}/></li>);
         // const listBooks = books
-
+         console.log(this.props.title)
+        // console.log(this.state)
+        
         if (error) {
             return <div>Error: {error.message}</div>;
         }
@@ -67,7 +69,7 @@ class SearchListComponent extends Component {
                     <AuthMenu/>
                 </div>
                 <div className="Booklist">
-                    <p>List by Title</p>
+                    <p>List by {this.props.title}</p>
                     {listBooks}
                 </div>
                 <BackButton/>

@@ -63,32 +63,31 @@ def whoami():
 @app.route('/createBookList', methods=['GET', 'POST'])
 @cross_origin()
 def create_book_list():
+  # if request.method == 'POST':
+  #   booktitle = request.form['booktitle']
+  #   print('POST ' + booktitle)
+  #   return jsonify(booktitle)
+  # else:
+  # temporary list
+  booklist = []
+  books = []
+  user_booklist_id = get_booklist_from_uid()
+  book1 = Book(booklist_id=user_booklist_id, book_id=1, title="fake book 1")
+  book2 = Book(booklist_id=user_booklist_id, book_id=2, title="fake book 2")
+  book3 = Book(booklist_id=user_booklist_id, book_id=3, title="fake book 3")
+  books.append(book1)
+  books.append(book2)
+  books.append(book3)
+  print('GET ' + str(book1))
 
-  if request.method == 'POST':
-    booktitle = request.form['booktitle']
-    print(booktitle)
-    return jsonify(booktitle)
-  else:
-    # temporary list
-    booklist = []
-    books = []
-    user_booklist_id = get_booklist_from_uid()
-    book1 = Book(booklist_id=user_booklist_id, book_id=1, title="fake book 1")
-    book2 = Book(booklist_id=user_booklist_id, book_id=2, title="fake book 2")
-    book3 = Book(booklist_id=user_booklist_id, book_id=3, title="fake book 3")
-    books.append(book1)
-    books.append(book2)
-    books.append(book3)
-    print(book1)
+  for book in books:
+    book = {
+      'book_id': book.book_id,
+      'title': book.title
+    }
+    booklist.append(book)
 
-    for book in books:
-      book = {
-        'book_id': book.book_id,
-        'title': book.title
-      }
-      booklist.append(book)
-
-    return jsonify(booklist)
+  return jsonify(booklist)
 
 @app.route('/booklist')
 @cross_origin()

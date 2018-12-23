@@ -12,22 +12,27 @@ class SearchComponent extends Component {
       isLoading: false
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    // const value = e.target.value;
-    // alert(value);
-    const data = new FormData(e.target);
-    // console.log(data)
+  // handleSubmit(e) {
+  //   e.preventDefault();
+  //   // const value = e.target.value;
+  //   // alert(value);
+  //   const data = new FormData(e.target);
+  //   // console.log(data)
 
-    fetch('http://localhost:5000/createBookList', {
-      credentials: 'include',
-      method: 'POST',
-      body: data,
-    })
-    .catch((error) => {this.setState({isLoading: true, error})});
+  //   fetch('http://localhost:5000/createBookList', {
+  //     credentials: 'include',
+  //     method: 'POST',
+  //     body: data,
+  //   })
+  //   .catch((error) => {this.setState({isLoading: true, error})});
+  // }
+
+  handleChange(event) {
+    this.setState({input: event.target.value});
   }
 
   render() {
@@ -39,13 +44,12 @@ class SearchComponent extends Component {
 
     return (
       <div className="Search">
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" name="booktitle" className="input" placeholder="Title..."/>
+        <form>
+          <input id="new_book_title" type="text" className="input" placeholder="Title..." value={this.state.input} onChange={this.handleChange} />
           {/* <input type="submit" value="Create List" /> */}
-          <Link to="/createBookList">
-              <button type="button">
-                    Create list
-              </button>
+          {/* document.getElementById("new_book_title").innerText */}
+          <Link to={{pathname: "/createBookList", state: { title: this.state.input }}}>
+              <button type="button">Create list</button>
           </Link>
         </form>
       </div>
