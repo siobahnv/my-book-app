@@ -5,28 +5,13 @@ class AuthMenu extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      username: "not logged in",
-      loggedin: false,
-      isLoading: false
-    };
-    
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setState({ isLoading: true });
-
-  //   fetch('http://localhost:5000/login', {
-  //     credentials: 'include',
-  //   });
-  // }
-
   handleLogin(e) {
     e.preventDefault();
     const data = new FormData(e.target);
-    this.setState({loggedin:true});
 
     fetch('http://localhost:5000/login', {
       credentials: 'include',
@@ -34,32 +19,32 @@ class AuthMenu extends Component {
       body: data,
     })    
     .then(() => this.props.authenticating());   
-    // .then(data => fetch('http://localhost:5000/whoami', {
-    //   credentials: 'include',
-    // }))
-    // .then(data => this.setState( { username : data.username }));
   }
 
   handleLogout(e) {
     e.preventDefault();
-    this.setState({loggedin:false});
 
-    // do something?
+    fetch('http://localhost:5000/logout', {
+      credentials: 'include'
+    })    
+    .then(() => this.props.authenticating()); 
   }
 
   render() {
-    const {loggedin} = this.state;
-
-    if (loggedin) {
+    if (this.props.loggedIn) {
       return (
-        <div>
-          <button onClick={this.handleLogout}>logout</button>
+        <div className="Nav">
+          <div className="profile">
+            <img src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile"/>
+            {this.props.username}
+            <button className="logoutbutton" onClick={this.handleLogout}>logout</button>
+          </div>
         </div>
       );
     }
 
     return (
-      <div className="sign-in">
+      <div className="Nav">
         <form method="POST" action="http://localhost:5000/login" id="userlogin" onSubmit={this.handleLogin}>
           <input type="text" name="username" placeholder="username"></input>
           <input type="text" name="password" placeholder="password"></input>

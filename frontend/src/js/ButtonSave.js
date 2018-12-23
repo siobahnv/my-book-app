@@ -6,15 +6,15 @@ class SaveButton extends Component {
         super(props);
     
         this.state = {
+          status: false,
           error: null,
           isLoading: false
         }
       }
 
     handleSave = (e) => {
-        console.log(this)
-        console.log(this.props.title)
-        const title = this.props.title
+        this.setState({status: true});
+        const title = this.props.title;
 
         fetch('http://localhost:5000/book/save', {
             credentials: 'include',
@@ -22,13 +22,11 @@ class SaveButton extends Component {
             body: title,
         })
         .then(response => response.json())
-        // .then(data => console.log(data))
-        // .then(() => this.props.refreshBooklist())
         .catch((error) => {this.setState({isLoading: true, error})});
       }
   
     render() {
-        const { error, isLoading } = this.state;
+        const { status, error, isLoading } = this.state;
 
         if (error) {
             return <div>Error: {error.message}</div>;
@@ -36,6 +34,12 @@ class SaveButton extends Component {
         
         if (isLoading) {
         return <p>Loading...</p>
+        }
+
+        if (status) {
+            return (
+                <i className="fa fa-check" aria-hidden="true"></i>
+            );
         }
 
         return (

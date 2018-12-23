@@ -11,7 +11,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      username: "not logged in"
+      username: "not logged in",
+      loggedIn: false
     }
 
     this.refresh = this.refresh.bind(this)
@@ -24,7 +25,10 @@ class App extends Component {
   refresh() {
     fetch('http://localhost:5000/whoami', {credentials: 'include'})
     .then(response => response.json())
-    .then(data => this.setState( { username : data.username ? data.username : "not logged in" }))
+    .then(data => this.setState( { 
+      username : data.username !== "nobody" ? data.username : "not logged in",
+      loggedIn : data.username !== "nobody" ? true : false
+    }))
     .catch((error) => { /* */});
   }
 
@@ -32,11 +36,10 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <AuthMenu authenticating={this.refresh}/>
-        </header>
+        <div className="Nav">
+          <AuthMenu authenticating={this.refresh} username={this.state.username} loggedIn={this.state.loggedIn}/>
+        </div>
         <div>
-          { this.state.username }
           <BooklistComponent/>
           <SearchComponent/>
         </div>

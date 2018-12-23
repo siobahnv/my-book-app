@@ -36,3 +36,14 @@
     /* may want to change this later: */
     margin: 10px;
 }
+
+.profile {
+    text-align: left;
+    left: 10px;
+}
+
+.logoutbutton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}

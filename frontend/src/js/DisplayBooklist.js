@@ -53,7 +53,7 @@ class BooklistComponent extends Component {
 
         return (
             <div className="Booklist">
-                <p>List by Title</p>
+                <p>Best List Evar</p>
                 {listBooks}
             </div>
         );
