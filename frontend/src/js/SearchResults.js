@@ -34,6 +34,13 @@ class SearchListComponent extends Component {
         .catch((error) => {this.setState({isLoading: true, error})});
     }
 
+    handleLogIn(name, isLoggedIn) {
+        this.setState( { 
+          username : name,
+          loggedIn : isLoggedIn
+        });
+      }
+
     render() {
         const { books, error, isLoading } = this.state;
         const listBooks = books.map((b) => <li key={b.book_id}>{b.title} <SaveButton title={b.title} refreshBooklist={this.refresh}/></li>);
@@ -50,7 +57,7 @@ class SearchListComponent extends Component {
             return (
                 <div className="SearchResults">
                     <div className="Nav">
-                        <AuthMenu/>
+                        <AuthMenu authenticating={this.handleLogIn} />
                     </div>
                     <div className="Booklist">
                         <p>You have zero books in your list.</p>
@@ -63,7 +70,7 @@ class SearchListComponent extends Component {
         return (
             <div className="SearchResults">
                 <div className="Nav">
-                    <AuthMenu/>
+                    <AuthMenu authenticating={this.handleLogIn} />
                 </div>
                 <div className="Booklist">
                     <p>List by {this.props.title}</p>

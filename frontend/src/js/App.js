@@ -15,21 +15,13 @@ class App extends Component {
       loggedIn: false
     }
 
-    this.refresh = this.refresh.bind(this)
-  }
-  
-  componentDidMount() {
-    this.refresh()
   }
 
-  refresh() {
-    fetch('http://localhost:5000/whoami', {credentials: 'include'})
-    .then(response => response.json())
-    .then(data => this.setState( { 
-      username : data.username !== "nobody" ? data.username : "not logged in",
-      loggedIn : data.username !== "nobody" ? true : false
-    }))
-    .catch((error) => { /* */});
+  handleLogIn(name, isLoggedIn) {
+    this.setState( { 
+      username : name,
+      loggedIn : isLoggedIn
+    });
   }
 
   render() {
@@ -37,7 +29,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="Nav">
-          <AuthMenu authenticating={this.refresh} username={this.state.username} loggedIn={this.state.loggedIn}/>
+          <AuthMenu authenticating={this.handleLogIn} />
         </div>
         <div>
           <BooklistComponent/>

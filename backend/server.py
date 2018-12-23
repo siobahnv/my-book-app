@@ -30,9 +30,7 @@ def after(response):
 @app.route('/')
 @cross_origin()
 def index():
-    if 'username' in session:
-        return 'Logged in'
-    return 'You are not logged in'
+  pass
 
 @app.route('/whoami')
 @cross_origin()
