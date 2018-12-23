@@ -15,13 +15,13 @@ class AuthMenu extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({ isLoading: true });
+  // componentDidMount() {
+  //   this.setState({ isLoading: true });
 
-    fetch('http://localhost:5000/login', {
-      credentials: 'include',
-    });
-  }
+  //   fetch('http://localhost:5000/login', {
+  //     credentials: 'include',
+  //   });
+  // }
 
   handleLogin(e) {
     e.preventDefault();

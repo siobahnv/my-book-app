@@ -60,7 +60,7 @@ def whoami():
 #     session.pop('username', None)
 #     return redirect(url_for('index'))
 
-@app.route("/createBookList", methods=['POST'])
+@app.route('/createBookList', methods=['POST'])
 @cross_origin()
 def create_book_list():
 
@@ -68,17 +68,19 @@ def create_book_list():
   print(booktitle)
 
   # temporary list
-  booklist = []
-  user_booklist_id = get_booklist_from_uid()
-  book1 = Book(booklist_id=user_booklist_id, title="fake book 1")
-  book2 = Book(booklist_id=user_booklist_id, title="fake book 2")
-  book3 = Book(booklist_id=user_booklist_id, title="fake book 3")
+  # booklist = []
+  # user_booklist_id = get_booklist_from_uid()
+  # book1 = Book(booklist_id=user_booklist_id, title="fake book 1")
+  # book2 = Book(booklist_id=user_booklist_id, title="fake book 2")
+  # book3 = Book(booklist_id=user_booklist_id, title="fake book 3")
 
-  print(book1)
+  # print(book1)
 
-  pass
+  # return jsonify("booktile")
+  # pass
+  return "boottitle"
 
-@app.route("/booklist")
+@app.route('/booklist')
 @cross_origin()
 def booklist():
   """Returns booklist."""
@@ -114,7 +116,7 @@ def booklist():
 #   """Returns a book."""
 #   pass
 
-@app.route("/book/<book_id>/delete")
+@app.route('/book/<book_id>/delete')
 @cross_origin()
 def delete_book(book_id):
   """Removes a book from a list."""

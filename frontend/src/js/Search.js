@@ -7,6 +7,7 @@ class SearchComponent extends Component {
 
     this.state = {
       input: '',
+      isLoading: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,19 +18,26 @@ class SearchComponent extends Component {
     // const value = e.target.value;
     // alert(value);
     const data = new FormData(e.target);
-    console.log(data)
+    // console.log(data)
 
-    // fetch('http://localhost:5000/createBookList', {
-    //   credentials: 'include',
-    //   method: 'POST',
-    //   body: data,
-    // })
+    fetch('http://localhost:5000/createBookList', {
+      credentials: 'include',
+      method: 'POST',
+      body: data,
+    })
+    .catch((error) => {this.setState({isLoading: true, error})});
   }
 
   render() {
+    const {error} = this.state;
+    
+    if (error) {
+      return <div>Error: {error.message}</div>
+    }
+
     return (
       <div className="Search">
-        <form method="POST" action="http://localhost:5000/createBookList" onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <input type="text" name="booktitle" className="input" placeholder="Title..."/>
           <input type="submit" value="Create List" />
         </form>
