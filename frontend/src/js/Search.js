@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../static/App.css';
 
+import { Link } from "react-router-dom";
+
 class SearchComponent extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,12 @@ class SearchComponent extends Component {
       <div className="Search">
         <form onSubmit={this.handleSubmit}>
           <input type="text" name="booktitle" className="input" placeholder="Title..."/>
-          <input type="submit" value="Create List" />
+          {/* <input type="submit" value="Create List" /> */}
+          <Link to="/createBookList">
+              <button type="button">
+                    Create list
+              </button>
+          </Link>
         </form>
       </div>
     );

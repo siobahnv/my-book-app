@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../static/App.css';
 
-import TrashButton from './TrashButton';
+import TrashButton from './ButtonTrash';
 
 class BooklistComponent extends Component {
     constructor(props) {

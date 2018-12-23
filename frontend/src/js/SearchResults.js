@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import '../static/App.css';
 
-import SaveButton from './SaveButton';
+import AuthMenu from './AuthMenu';
+import BackButton from './ButtonBackToMain';
+import SaveButton from './ButtonSave';
 
 class SearchListComponent extends Component {
     constructor(props) {
@@ -47,16 +49,28 @@ class SearchListComponent extends Component {
 
         if (books.length === 0) {
             return (
-                <div className="Booklist">
-                    <p>You have zero books in your list.</p>
+                <div className="SearchResults">
+                    <div className="Nav">
+                        <AuthMenu/>
+                    </div>
+                    <div className="Booklist">
+                        <p>You have zero books in your list.</p>
+                    </div>
+                    <BackButton/>
                 </div>
             );
         }
 
         return (
-            <div className="Booklist">
-                <p>List by Title</p>
-                {listBooks}
+            <div className="SearchResults">
+                <div className="Nav">
+                    <AuthMenu/>
+                </div>
+                <div className="Booklist">
+                    <p>List by Title</p>
+                    {listBooks}
+                </div>
+                <BackButton/>
             </div>
         );
     }
