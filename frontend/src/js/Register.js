@@ -14,6 +14,8 @@ class Register extends Component {
         this.handleRegister = this.handleRegister.bind(this)
         this.renderForm = this.renderForm.bind(this)
         this.renderHomepage = this.renderHomepage.bind(this)
+
+        this.handleClick = this.handleClick.bind(this)
     }
 
     componentDidMount() {
@@ -32,6 +34,7 @@ class Register extends Component {
     }
 
     handleRegister(e) {
+        console.log("hitting here?");
         this.setState({ isLoading: true});
         this.setState({ newUser: "test" });
 
@@ -48,13 +51,23 @@ class Register extends Component {
         .catch((error) => {this.setState({isLoading: true, error})});
     }
 
+    handleClick(e) {
+        console.log("you clicked!");
+
+        const data = new FormData(e.target);
+        console.log(data);
+        console.log(data.username);
+    }
+
     renderForm() {
         return (
-            <div className="Register">
-                <form id="userregister" name="register" className="form" onSubmit={this.handleRegister}>
+            <div className="RegisterForm">
+                {/* <form id="userregister" name="register" className="form" onSubmit={this.handleRegister}> */}
+                <form id="userregister" name="register" className="form">
                     <input type="text" name="username" placeholder="username"></input>
                     <input type="text" name="email" placeholder="email"></input>
                     <input type="text" name="password" placeholder="password"></input>
+                    {/* <button type="button" onClick={this.handleClick}>Register</button> */}
                     <button type="button">Register</button>
                 </form>
             </div>
@@ -78,11 +91,22 @@ class Register extends Component {
             return <p>Loading...</p>
         }
 
+        // return (
+        //     <div className="Register">
+        //       {this.state.newUser === null
+        //         ? this.renderForm()
+        //         : this.renderHomepage()}
+        //     </div>
+        // );
         return (
-            <div className="Signup">
-              {this.state.newUser === null
-                ? this.renderForm()
-                : this.renderHomepage()}
+            <div className="RegisterForm">
+                <form id="userregister" name="register" className="myform" onSubmit={this.handleRegister}>
+                    <input type="text" name="username" placeholder="username"></input>
+                    <input type="text" name="email" placeholder="email"></input>
+                    <input type="text" name="password" placeholder="password"></input>
+                    {/* <button type="button" onClick={this.handleClick}>Register</button> */}
+                    <button type="button">Register</button>
+                </form>
             </div>
         );
     }
