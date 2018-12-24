@@ -1,6 +1,7 @@
 """Woo backend coding!"""
 
 from model import User, Book, BookList, connect_to_db, db
+from seed import *
 
 from secrets import *
 
@@ -37,6 +38,19 @@ def index():
 def whoami():
   return jsonify ({ 'username' : session.get('username', 'nobody') })
 
+@app.route('/register', methods=['POST'])
+@cross_origin()
+def register():
+  session['username'] = request.form['username']
+  session['email'] = request.form['email']
+  session['password'] = request.form['password']
+  print("registering: " + session['username'])
+
+  user = User(username=session['username'], email=session['email'], password=session['password'])
+  db.session.add(user)
+  db.session.commit()
+
+  return jsonify("registered successfully")
 
 @app.route('/login', methods=['POST'])
 @cross_origin()
@@ -150,5 +164,10 @@ def delete_book(book_id):
 if __name__ == "__main__":
     
     connect_to_db(app)
+
+    # In case tables haven't been created, create them
+    db.create_all()
+    # Import different types of data
+    load_data()
 
     app.run(port=5000, host='0.0.0.0')

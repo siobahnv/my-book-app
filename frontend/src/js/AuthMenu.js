@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../static/App.css';
 
+import { Link } from "react-router-dom";
+
 class AuthMenu extends Component {
   constructor(props) {
     super(props);
@@ -70,6 +72,7 @@ class AuthMenu extends Component {
           <input type="text" name="username" placeholder="username"></input>
           <input type="text" name="password" placeholder="password"></input>
           <button>Login</button>
+          <Link to="/register"><button type="button">Register</button></Link>
         </form>
       </div>
     );

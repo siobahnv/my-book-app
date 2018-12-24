@@ -8,6 +8,7 @@ import SearchListComponent from './js/SearchResults'
 // import SearchComponent from './js/Search';
 
 import * as serviceWorker from './js/serviceWorker';
+import Register from './js/Register';
 // import SearchComponent from './js/Search';
 
 // const AppRouter = () => (
@@ -27,6 +28,7 @@ ReactDOM.render((
         <Switch>
             <Route exact path="/" component={App}/>
             <Route path="/createBookList" render={ (routeInfo, ...rest) => <SearchListComponent title={routeInfo.location.state.title}/> } />
+            <Route path="/register" component={Register}/>
         </Switch>
     </BrowserRouter>
     ), document.getElementById('root')
