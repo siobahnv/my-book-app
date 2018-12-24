@@ -8,34 +8,13 @@ class Register extends Component {
         this.state = {
             error: null,
             isLoading: false,
-            newUser: null
         };
 
         this.handleRegister = this.handleRegister.bind(this)
-        this.renderForm = this.renderForm.bind(this)
-        this.renderHomepage = this.renderHomepage.bind(this)
-
-        this.handleClick = this.handleClick.bind(this)
-    }
-
-    componentDidMount() {
-        this.refresh()
-    }
-
-    refresh() {
-        fetch('http://localhost:5000/whoami', {credentials: 'include'})
-        .then(response => response.json())
-        .then(data => this.setState( { 
-            username : data.username !== "nobody" ? data.username : "not logged in",
-            loggedIn : data.username !== "nobody" ? true : false
-        }))
-        .then(() => this.props.authenticating(this.state.username, this.state.loggedIn))
-        .catch((error) => { /* */});
     }
 
     handleRegister(e) {
         console.log("hitting here?");
-        this.setState({ isLoading: true});
         this.setState({ newUser: "test" });
 
         const data = new FormData(e.target);
@@ -43,41 +22,13 @@ class Register extends Component {
         fetch('http://localhost:5000/register', {
             credentials: 'include',
             method: 'POST',
-            body: data,
-            headers: {'Content-Type': 'application/json'}
+            body: data
         })
         .then(response => response.json())
-        .then(() => this.refresh())
-        .catch((error) => {this.setState({isLoading: true, error})});
-    }
-
-    handleClick(e) {
-        console.log("you clicked!");
-
-        const data = new FormData(e.target);
-        console.log(data);
-        console.log(data.username);
-    }
-
-    renderForm() {
-        return (
-            <div className="RegisterForm">
-                {/* <form id="userregister" name="register" className="form" onSubmit={this.handleRegister}> */}
-                <form id="userregister" name="register" className="form">
-                    <input type="text" name="username" placeholder="username"></input>
-                    <input type="text" name="email" placeholder="email"></input>
-                    <input type="text" name="password" placeholder="password"></input>
-                    {/* <button type="button" onClick={this.handleClick}>Register</button> */}
-                    <button type="button">Register</button>
-                </form>
-            </div>
-        );
-    }
-
-    renderHomepage() {
-        fetch('http://localhost:5000/', {
-            credentials: 'include'
+        .then(() => {
+            this.props.history.goBack();
         })
+        .catch((error) => {this.setState({isLoading: true, error})});
     }
 
     render() {
@@ -91,21 +42,13 @@ class Register extends Component {
             return <p>Loading...</p>
         }
 
-        // return (
-        //     <div className="Register">
-        //       {this.state.newUser === null
-        //         ? this.renderForm()
-        //         : this.renderHomepage()}
-        //     </div>
-        // );
         return (
             <div className="RegisterForm">
                 <form id="userregister" name="register" className="myform" onSubmit={this.handleRegister}>
                     <input type="text" name="username" placeholder="username"></input>
                     <input type="text" name="email" placeholder="email"></input>
                     <input type="text" name="password" placeholder="password"></input>
-                    {/* <button type="button" onClick={this.handleClick}>Register</button> */}
-                    <button type="button">Register</button>
+                    <button>Register</button>
                 </form>
             </div>
         );
