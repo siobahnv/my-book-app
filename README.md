@@ -1,3 +1,11 @@
+To start the backend:
+* start VM
+* navigate to folder (/backend)
+* "pip3 install -r requirements.txt"
+* "createdb booklists"
+* "python3 server.py"s
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
