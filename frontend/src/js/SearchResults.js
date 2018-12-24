@@ -36,10 +36,10 @@ class SearchListComponent extends Component {
 
     handleLogIn(name, isLoggedIn) {
         this.setState( { 
-          username : name,
-          loggedIn : isLoggedIn
+            username : name,
+            loggedIn : isLoggedIn
         });
-      }
+    }
 
     render() {
         const { books, error, isLoading } = this.state;

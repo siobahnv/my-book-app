@@ -47,8 +47,8 @@ def register():
   print("registering: " + session['username'])
 
   user = User(username=session['username'], email=session['email'], password=session['password'])
-  db.session.add(user)
-  db.session.commit()
+  # db.session.add(user)
+  # db.session.commit()
 
   return jsonify("registered successfully")
 
