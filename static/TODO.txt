@@ -1,3 +1,4 @@
 TODOs:
 
+* Pass along username and password to Register page if entered in Login page.
 * If book is already in list, replace Save button with Checkmark icon (and don't let them add it again).
