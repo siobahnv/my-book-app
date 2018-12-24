@@ -14,9 +14,6 @@ class Register extends Component {
     }
 
     handleRegister(e) {
-        console.log("hitting here?");
-        this.setState({ newUser: "test" });
-
         const data = new FormData(e.target);
 
         fetch('http://localhost:5000/register', {
