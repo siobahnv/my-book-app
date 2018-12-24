@@ -59,14 +59,14 @@ def login():
   session['password'] = request.form['password']
   print("logging in: " + session['username'])
   session['user_id'] = 1 # TODO: fix later
-  return "logged in successfully"
+  return jsonify("logged in successfully")
 
 @app.route('/logout')
 @cross_origin()
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
-    return redirect(url_for('index'))
+    return jsonify("logged out")
 
 @app.route('/createBookList', methods=['GET', 'POST'])
 @cross_origin()
