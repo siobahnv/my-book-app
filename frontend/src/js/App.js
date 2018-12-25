@@ -31,7 +31,7 @@ class App extends Component {
         <div className="Nav">
           <AuthMenu authenticating={this.handleLogIn} />
         </div>
-        <div>
+        <div className="App-body">
           <BooklistComponent/>
           <SearchComponent/>
         </div>

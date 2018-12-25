@@ -46,20 +46,33 @@ def register():
   session['password'] = request.form['password']
   print("registering: " + session['username'])
 
-  user = User(username=session['username'], email=session['email'], password=session['password'])
+  # user = User(username=session['username'], email=session['email'], password=session['password'])
   # db.session.add(user)
   # db.session.commit()
 
   return jsonify("registered successfully")
 
+#TODO: fix App.js + components to handle None case
 @app.route('/login', methods=['POST'])
 @cross_origin()
 def login():
   session['username'] = request.form['username']
   session['password'] = request.form['password']
   print("logging in: " + session['username'])
-  session['user_id'] = 1 # TODO: fix later
-  return jsonify("logged in successfully")
+
+  # need to check if in database
+  # https://docs.sqlalchemy.org/en/latest/orm/query.html
+  q = User.query.filter(User.username==session['username']).scalar()
+  print(q)
+
+  if q is not None:
+    # get user id?
+    session['user_id'] = 1 # TODO: fix later
+    return jsonify("logged in successfully")
+  else:
+    # else return to register?
+    flash("Please register.")
+    return jsonify("login not successful")
 
 @app.route('/logout')
 @cross_origin()
