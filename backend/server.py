@@ -20,6 +20,7 @@ cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r
 ##############################################################################
 
 def get_books_from_blid(blid):
+  """Returns a list of books from a booklist id."""
   # TODO: does following the relationship do another query? Probably not?
 
   pairs = BookListPair.query.filter(BookListPair.booklist_id==blid).all()
@@ -31,9 +32,13 @@ def get_books_from_blid(blid):
   return books
 
 def get_books_from_temp_list(list):
+  """Returns a list of books queried from a list of book ids stored in temp_booklist."""
+
   return Book.query.filter(Book.book_id.in_(list)).all()
 
 def get_blid_from_uid():
+  """Returns a booklist id from based on user id if logged in or temp_user; defaults to 1."""
+
   if 'user_id' in session:
     user_id = session['user_id']
     user = User.query.filter(User.user_id==user_id).one()
@@ -56,6 +61,8 @@ def get_blid_from_uid():
       return 1 #TODO: fix later
 
 def get_or_create_book_from_title(title):
+  """(Creates and) Returns a book from title."""
+
   book = Book.query.filter(Book.title==title).first()
   if book is not None:
     return book
@@ -69,22 +76,26 @@ def get_or_create_book_from_title(title):
 
 @app.after_request
 def after(response):
+  """Adds headers to all responses to satisfy CORS."""
   response.headers.add('Access-Control-Allow-Credentials', 'true')
   return response
 
-@app.route('/')
-@cross_origin()
-def index():
-  pass
+# @app.route('/')
+# @cross_origin()
+# def index():
+#   pass
 
 @app.route('/whoami')
 @cross_origin()
 def whoami():
+  """"Returns username if exists or defaults to 'nobody'."""
   return jsonify ({ 'username' : session.get('username', 'nobody') })
 
 @app.route('/register', methods=['POST'])
 @cross_origin()
 def register():
+  """Gets user info from form; creates & adds to session new user & booklist."""
+
   session['username'] = request.form['username']
   session['email'] = request.form['email']
   session['password'] = request.form['password']
@@ -110,6 +121,8 @@ def register():
 @app.route('/login', methods=['POST'])
 @cross_origin()
 def login():
+  """ Gets user info from form & adds to session, checks if exists...?"""
+
   session['username'] = request.form['username']
   session['password'] = request.form['password']
   print("logging in: " + session['username'])
@@ -134,14 +147,18 @@ def login():
 @app.route('/logout')
 @cross_origin()
 def logout():
-    # session.pop('username', None)
-    # session.pop('user_id', None)
-    session.clear()
-    return jsonify("logged out")
+  """Clears session."""
+
+  # session.pop('username', None)
+  # session.pop('user_id', None)
+  session.clear()
+  return jsonify("logged out")
 
 @app.route('/createBookList')
 @cross_origin()
 def create_book_list():
+  """Returns a list of books based on entered book title."""
+  
   # if request.method == 'POST':
   #   booktitle = request.form['booktitle']
   #   print('POST ' + booktitle)
