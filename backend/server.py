@@ -32,7 +32,7 @@ def get_books_from_blid(blid):
   return books
 
 def get_books_from_temp_list(list):
-  """Returns a list of books queried from a list of book ids stored in temp_booklist."""
+  """Returns a list of books queried from a list of book ids."""
 
   return Book.query.filter(Book.book_id.in_(list)).all()
 
@@ -158,7 +158,7 @@ def logout():
 @cross_origin()
 def create_book_list():
   """Returns a list of books based on entered book title."""
-  
+
   # if request.method == 'POST':
   #   booktitle = request.form['booktitle']
   #   print('POST ' + booktitle)
@@ -227,6 +227,7 @@ def save_book():
   #TODO: make save send the id instead of the title
   title = request.data.decode('UTF-8')
 
+  # book is created in /createBookList
   new_book_id = Book.query.filter(Book.title==title).first().book_id
 
   if 'user_id' in session:
@@ -246,7 +247,6 @@ def save_book():
 
   return jsonify("book saved")
 
-# TODO: need to redo whole thing...
 @app.route('/book/<book_id>/delete')
 @cross_origin()
 def delete_book(book_id):
@@ -254,25 +254,27 @@ def delete_book(book_id):
 
   if 'user_id' in session:
     user_booklist_id = get_blid_from_uid()
-    book = Book.query.filter(Book.book_id==book_id, Book.booklist_id==user_booklist_id).one()
-    print(book)
-    db.session.delete(book)
+    # book = Book.query.filter(Book.book_id==book_id).one()
+    # print(book)
+    blp = BookListPair.query.filter(BookListPair.book_id==book_id, BookListPair.booklist_id==user_booklist_id).one()
+    db.session.delete(blp)
+    # db.session.delete(book)
     db.session.commit()
-  
-  # if 'temp_booklist_id' in session:
-  #   # remove book...
-  #   temp_bl_id = session['temp_booklist_id']
-  #   book = Book.query.filter(Book.book_id==book_id, Book.booklist_id==temp_bl_id).one()
-  #   print(book)
 
-  # TODO: need to get title...?
-  if 'temp_booklist' in session:
+  elif 'temp_booklist' in session:
     temp_bl = session['temp_booklist']
-    temp_bl.remove(title)
+
+    if int(book_id) in temp_bl:
+      temp_bl.remove(int(book_id))
+    else:
+      print("can't delete")
+
     session['temp_booklist'] = temp_bl
     print(session['temp_booklist'])
   
   return jsonify("book deleted")
+
+##############################################################################
 
 if __name__ == "__main__":
     
