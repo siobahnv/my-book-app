@@ -1,0 +1,64 @@
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+index 936fa9b..aab5c78 100644
+--- a/frontend/package-lock.json
++++ b/frontend/package-lock.json
+@@ -11324,6 +11324,11 @@
+       "resolved": "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-5.1.0.tgz",
+       "integrity": "sha512-akMy/BQT5m1J3iJIHkSb4qycq2wzllWsmmolaaFVnb+LPV9cIJ/nTud40ZsiiT0H3P+/wXIdbjx2fzF61OaeOQ=="
+     },
++    "react-flash-message": {
++      "version": "1.0.2",
++      "resolved": "https://registry.npmjs.org/react-flash-message/-/react-flash-message-1.0.2.tgz",
++      "integrity": "sha1-w4o+5NjyFgFMiuQjbMI1Diy//wo="
++    },
+     "react-router": {
+       "version": "4.3.1",
+       "resolved": "https://registry.npmjs.org/react-router/-/react-router-4.3.1.tgz",
+diff --git a/frontend/package.json b/frontend/package.json
+index 7272a5b..0271b4c 100644
+--- a/frontend/package.json
++++ b/frontend/package.json
+@@ -5,6 +5,7 @@
+   "dependencies": {
+     "react": "^16.6.3",
+     "react-dom": "^16.6.3",
++    "react-flash-message": "^1.0.2",
+     "react-router-dom": "^4.3.1",
+     "react-scripts": "2.1.1"
+   },
+diff --git a/frontend/src/js/AuthMenu.js b/frontend/src/js/AuthMenu.js
+index 4111af6..12cf2a6 100644
+--- a/frontend/src/js/AuthMenu.js
++++ b/frontend/src/js/AuthMenu.js
+@@ -1,8 +1,17 @@
+ import React, { Component } from 'react';
++import ReactDOM from 'react-dom';
+ import '../static/App.css';
+ 
+ import { Link } from "react-router-dom";
+ 
++import FlashMessage from 'react-flash-message'
++
++const Message = (
++  <FlashMessage duration={5000}>
++    <strong>Username does not exist.</strong>
++  </FlashMessage>
++)
++
+ class AuthMenu extends Component {
+   constructor(props) {
+     super(props);
+@@ -43,7 +52,12 @@ class AuthMenu extends Component {
+       method: 'POST',
+       body: data,
+     })    
+-    .then(() => this.refresh());   
++    .then(response => response.text())
++    .then(return_text => {
++      if (return_text==="logged in successfully"){this.refresh()} 
++      else {ReactDOM.render(Message, document.getElementById('root'));};
++    });
++    // .then(() => this.refresh());   
+   }
+ 
+   handleLogout(e) {

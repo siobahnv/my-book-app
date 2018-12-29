@@ -40,7 +40,8 @@ class BookList(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     user = db.relationship('User')
-    books = db.relationship('Book')
+    # books = db.relationship('Book')
+    blp = db.relationship('BookListPair')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -52,7 +53,7 @@ class Book(db.Model):
     __tablename__ = "books"
 
     book_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    booklist_id = db.Column(db.Integer, db.ForeignKey('booklists.booklist_id'))
+    # booklist_id = db.Column(db.Integer, db.ForeignKey('booklists.booklist_id'))
     title = db.Column(db.String(120), nullable=False)
     isbn = db.Column(db.String(13), nullable=True)
     author = db.Column(db.String(64), nullable=True)
@@ -60,13 +61,30 @@ class Book(db.Model):
     goodreads_rating = db.Column(db.Integer, nullable=True)
     # generator_book = db.Column()
 
-    booklist = db.relationship('BookList')
+    # booklist = db.relationship('BookList')
+
+    blp = db.relationship('BookListPair')
 
 
     def __repr__(self):
         """Provide helpful representation when printed."""
         return f"<Book book_id={self.book_id} title={self.title}>"
 
+class BookListPair(db.Model):
+    """Books and booklist_id pairs."""
+
+    __tablename__ = "booklistpairs"
+
+    blp_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    booklist_id = db.Column(db.Integer, db.ForeignKey('booklists.booklist_id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'))
+
+    booklist = db.relationship('BookList')
+    book = db.relationship('Book')
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"<BookListPair booklist_id={self.booklist_id}>"
 ##############################################################################
 # Helper functions
 
