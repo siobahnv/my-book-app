@@ -107,13 +107,23 @@ def register():
   db.session.commit()
 
   new_user = User.query.filter(User.username==session['username']).one()
-  session['user_id'] = new_user.user_id
+  new_user_id = new_user.user_id
+  session['user_id'] = new_user_id
 
   # create new booklist
-  # new_booklist = BookList(user_id=user.user_id)
-  # db.session.add(new_booklist)
-  # db.session.commit()
-  # TODO: add temporary booklist to new booklist
+  new_booklist = BookList(user_id=new_user_id)
+  db.session.add(new_booklist)
+  db.session.commit()
+  # add temporary booklist to new booklist
+  if 'temp_booklist' in session:
+    new_bl_id = BookList.query.filter(BookList.user_id==new_user_id).first().booklist_id
+    books = get_books_from_temp_list(session['temp_booklist'])
+
+    for book in books:
+      blp = BookListPair(booklist_id=new_bl_id, book_id=book.book_id)
+      db.session.add(blp)
+    db.session.commit()
+    print("pairs success?")
 
   return jsonify("registered successfully")
 

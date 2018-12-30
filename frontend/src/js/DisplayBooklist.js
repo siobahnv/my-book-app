@@ -34,7 +34,6 @@ class BooklistComponent extends Component {
     render() {
         const { books, error, isLoading } = this.state;
         const listBooks = books.map((b) => <li key={b.book_id}>{b.title} <TrashButton book_id={b.book_id} refreshBooklist={this.refresh}/></li>);
-        // const listBooks = books.map((b) => <li>{b.title} <TrashButton book_title={b.book_title} refreshBooklist={this.refresh}/></li>);
 
         if (error) {
             return <div>Error: {error.message}</div>;

@@ -4,8 +4,7 @@ import '../static/App.css';
 class Register extends Component {
     constructor(props) {
         super(props);
-
-        const {username, password} = this.props.location.state
+        const {username, password} = props.location.state
 
         this.state = {
             username: username,
