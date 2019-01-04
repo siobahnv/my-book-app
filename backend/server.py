@@ -19,6 +19,14 @@ cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r
 
 ##############################################################################
 
+def add_books_to_list(lst_id, books):
+  """Takes a book list id and a list of books to add to that list."""
+  for book in books:
+    blp = BookListPair(booklist_id=lst_id, book_id=book.book_id)
+    db.session.add(blp)
+  db.session.commit()
+  print("pairs success?")
+
 def get_books_from_blid(blid):
   """Returns a list of books from a booklist id."""
   # TODO: does following the relationship do another query? Probably not?
@@ -118,12 +126,7 @@ def register():
   if 'temp_booklist' in session:
     new_bl_id = BookList.query.filter(BookList.user_id==new_user_id).first().booklist_id
     books = get_books_from_temp_list(session['temp_booklist'])
-
-    for book in books:
-      blp = BookListPair(booklist_id=new_bl_id, book_id=book.book_id)
-      db.session.add(blp)
-    db.session.commit()
-    print("pairs success?")
+    add_books_to_list(new_bl_id, books)
 
   return jsonify("registered successfully")
 
@@ -147,6 +150,12 @@ def login():
     # get user id?
     user = user_q.one()
     session['user_id'] = user.user_id
+
+    if 'temp_booklist' in session:
+      new_bl_id = BookList.query.filter(BookList.user_id==user.user_id).first().booklist_id # TODO: fix later...
+      books = get_books_from_temp_list(session['temp_booklist'])
+      add_books_to_list(new_bl_id, books)
+
     return jsonify("logged in successfully")
   else:
     # else return to register?
@@ -158,9 +167,6 @@ def login():
 @cross_origin()
 def logout():
   """Clears session."""
-
-  # session.pop('username', None)
-  # session.pop('user_id', None)
   session.clear()
   return jsonify("logged out")
 
@@ -168,12 +174,6 @@ def logout():
 @cross_origin()
 def create_book_list():
   """Returns a list of books based on entered book title."""
-
-  # if request.method == 'POST':
-  #   booktitle = request.form['booktitle']
-  #   print('POST ' + booktitle)
-  #   return jsonify(booktitle)
-  # else:
 
   # TODO: replace with API
   # temporary list
