@@ -1,9 +1,5 @@
 TODOs:
 
-* Finish converting /delete route
-* Handle merge after signin of books
 * Handle duplication/existing books
-
-* Pass along username and password to Register page if entered in Login page.
 * Look into a library for form validation...
 * If book is already in list, replace Save button with Checkmark icon (and don't let them add it again).

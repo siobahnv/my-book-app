@@ -19,6 +19,7 @@ cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r
 
 ##############################################################################
 
+# TODO: handle duplicate books...
 def add_books_to_list(lst_id, books):
   """Takes a book list id and a list of books to add to that list."""
   for book in books:
