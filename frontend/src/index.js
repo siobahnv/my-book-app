@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { Provider } from "react-redux";
+import store from "./js/store/store";
+
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './static/index.css';
 
@@ -11,26 +15,17 @@ import * as serviceWorker from './js/serviceWorker';
 import Register from './js/Register';
 // import SearchComponent from './js/Search';
 
-// const AppRouter = () => (
-//     <Router>
-//       <div>
-//         {/* <Route path="/register" component={RegisterPage} /> */}
-//         {/* <Route path="/login/" component={Login} /> */}
-//         <Route path="//" component={App} />
-//         <Route path="/createBookList" component={SearchComponent} />
-//       </div>
-//     </Router>
-//   );
-
 // ReactDOM.render(<App/>, document.getElementById('root'));
 ReactDOM.render((
-    <BrowserRouter>
-        <Switch>
-            <Route exact path="/" component={App}/>
-            <Route path="/createBookList" render={ (routeInfo, ...rest) => <SearchListComponent title={routeInfo.location.state.title}/> } />
-            <Route path="/register" component={Register}/>
-        </Switch>
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/" component={App}/>
+                <Route path="/createBookList" render={ (routeInfo, ...rest) => <SearchListComponent title={routeInfo.location.state.title}/> } />
+                <Route path="/register" component={Register}/>
+            </Switch>
+        </BrowserRouter>
+    </Provider>
     ), document.getElementById('root')
 );
 
