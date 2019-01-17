@@ -52,7 +52,8 @@ class SaveButton extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    // let status = ownProps.status;
     return {
         // books: state.books
     }
