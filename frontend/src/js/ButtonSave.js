@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import '../static/App.css';
+import { ADD_BOOK } from './constants/action-types';
 
 class SaveButton extends Component {
     constructor(props) {
@@ -7,8 +10,8 @@ class SaveButton extends Component {
     
         this.state = {
           status: false,
-          error: null,
-          isLoading: false
+        //   error: null,
+        //   isLoading: false
         }
       }
 
@@ -21,20 +24,21 @@ class SaveButton extends Component {
             method: 'POST',
             body: title,
         })
-        .then(response => response.json())
-        .catch((error) => {this.setState({isLoading: true, error})});
+        // .then(response => response.json())
+        // .catch((error) => {this.setState({isLoading: true, error})});
       }
   
     render() {
-        const { status, error, isLoading } = this.state;
+        // const { status, error, isLoading } = this.state;
+        const { status } = this.state;
 
-        if (error) {
-            return <div>Error: {error.message}</div>;
-        }
+        // if (error) {
+        //     return <div>Error: {error.message}</div>;
+        // }
         
-        if (isLoading) {
-        return <p>Loading...</p>
-        }
+        // if (isLoading) {
+        // return <p>Loading...</p>
+        // }
 
         if (status) {
             return (
@@ -48,4 +52,14 @@ class SaveButton extends Component {
     }
 }
 
-export default SaveButton;
+const mapStateToProps = (state) => {
+    return {
+        // books: state.books
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    saveBook: (id) => { dispatch({type: 'ADD_BOOK', id: id}) }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveButton)
