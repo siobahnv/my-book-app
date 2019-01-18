@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-
 import '../static/App.css';
-import { ADD_BOOK } from './constants/action-types';
 
 class SaveButton extends Component {
     constructor(props) {
@@ -52,15 +50,15 @@ class SaveButton extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    // let status = ownProps.status;
-    return {
-        // books: state.books
-    }
-}
+// const mapStateToProps = (state, ownProps) => {
+//     // let status = ownProps.status;
+//     return {
+//         // books: state.books
+//     }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-    saveBook: (id) => { dispatch({type: 'ADD_BOOK', id: id}) }
-}
+// const mapDispatchToProps = (dispatch) => {
+//     // saveBook: (id) => { dispatch({type: 'ADD_BOOK', id: id}) }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SaveButton)
+export default connect()(SaveButton)

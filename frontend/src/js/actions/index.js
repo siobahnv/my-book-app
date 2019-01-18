@@ -1,5 +1,9 @@
-import { ADD_BOOK } from "../constants/action-types";
+import * as actions from "../constants/action-types";
 
-export function addBook(payload) {
-    return { type: ADD_BOOK, payload }
-  };
+export function fetchBooks(payload) {
+    return { type: actions.FETCH_BOOKS, payload }
+}
+
+export function fetchBooklist(payload) {
+    return { type: actions.FETCH_BOOKLIST, payload }
+}

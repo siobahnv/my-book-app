@@ -178,7 +178,7 @@ def create_book_list():
 
   # TODO: replace with API
   # temporary list
-  booklist = []
+  searchresults = []
   titles = ["fake book 1", "fake book 2", "fake book 3"]
 
   for title in titles:
@@ -188,9 +188,9 @@ def create_book_list():
       'book_id': new_book.book_id,
       'title': new_book.title
     }
-    booklist.append(book)
+    searchresults.append(book)
 
-  return jsonify(booklist)
+  return jsonify(searchresults)
 
 @app.route('/booklist')
 @cross_origin()
