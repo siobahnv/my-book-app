@@ -21,8 +21,8 @@ function rootReducer(state = initialState, action) {
     if (action.type === actions.FETCH_BOOKLIST) {
         return Object.assign({}, state, {
             ...state,
-            // booklist: action.payload
-            booklist: state.booklist.concat(action.payload)
+            booklist: action.payload
+            // booklist: state.booklist.concat(action.payload)
         });
     }
 
