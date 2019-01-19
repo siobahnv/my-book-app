@@ -8,11 +8,11 @@ class BooklistComponent extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            books: [],
-            error: null,
-            isLoading: false
-        };
+        // this.state = {
+        //     books: [],
+        //     error: null,
+        //     isLoading: false
+        // };
 
         this.refresh = this.refresh.bind(this)
     }
@@ -30,7 +30,7 @@ class BooklistComponent extends Component {
         .then(response => response.json())
         .then(data => this.props.fetchBooklist(data))
         // .then(data => this.setState({ books: data, isLoading: false }))
-        .catch((error) => {this.setState({isLoading: true, error})});
+        // .catch((error) => {this.setState({isLoading: true, error})});
     }
 
     render() {
@@ -70,7 +70,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchBooks: (books) => dispatch(fetchBooklist(books))
+    fetchBooklist: (books) => dispatch(fetchBooklist(books))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BooklistComponent)

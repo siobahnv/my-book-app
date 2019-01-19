@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+// import { addBook } from './actions';
 import '../static/App.css';
 
 class SaveButton extends Component {
@@ -22,6 +23,7 @@ class SaveButton extends Component {
             method: 'POST',
             body: title,
         })
+        // .then(data => this.props.addBook(data))
         // .then(response => response.json())
         // .catch((error) => {this.setState({isLoading: true, error})});
       }
@@ -60,5 +62,15 @@ class SaveButton extends Component {
 // const mapDispatchToProps = (dispatch) => {
 //     // saveBook: (id) => { dispatch({type: 'ADD_BOOK', id: id}) }
 // }
+
+// const mapStateToProps = (state) => {
+//     return {
+//         booklist: state.booklist
+//     }
+// }
+
+// const mapDispatchToProps = (dispatch) => ({
+//     addBook: (book) => dispatch(addBook(book))
+// })
 
 export default connect()(SaveButton)
