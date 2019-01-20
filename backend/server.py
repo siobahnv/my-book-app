@@ -35,9 +35,16 @@ def load_user(user_id):
 def add_books_to_list(lst_id, books):
   """Takes a book list id and a list of books to add to that list."""
   for book in books:
-    blp = BookListPair(booklist_id=lst_id, book_id=book.book_id)
-    db.session.add(blp)
-  db.session.commit()
+    pair = BookListPair.query.filter(BookListPair.book_id==book.book_id).first()
+
+    if pair is None:
+      blp = BookListPair(booklist_id=lst_id, book_id=book.book_id)
+      db.session.add(blp)
+      db.session.commit()
+      print("Pair doesn't exist. Pair added!")
+    
+    print("pair exists")
+
   print("pairs success?")
 
 def get_books_from_blid(blid):
@@ -260,9 +267,11 @@ def save_book():
 
   if 'user_id' in session:
     user_booklist_id = get_blid_from_uid()
-    blp = BookListPair(booklist_id=user_booklist_id, book_id=new_book_id )
-    db.session.add(blp)
-    db.session.commit()
+    pair = BookListPair.query.filter(BookListPair.book_id==new_book_id).first()
+    if pair is None:
+      blp = BookListPair(booklist_id=user_booklist_id, book_id=new_book_id )
+      db.session.add(blp)
+      db.session.commit()
   elif 'temp_booklist' in session:
     temp_bl = session['temp_booklist']
     #TODO: check if that id is already in the list
