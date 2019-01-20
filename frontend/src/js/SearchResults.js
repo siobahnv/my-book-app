@@ -12,7 +12,7 @@ class SearchListComponent extends Component {
         super(props);
 
         this.state = {
-            books: [],
+            // books: [],
             error: null,
             isLoading: false
         };
@@ -61,7 +61,7 @@ class SearchListComponent extends Component {
             return (
                 <div className="SearchResults">
                     <div className="Nav">
-                        {/* <AuthMenu authenticating={this.handleLogIn} /> */}
+                        <AuthMenu authenticating={this.handleLogIn} />
                     </div>
                     <div className="Booklist">
                         <p>You have zero books in your list.</p>
@@ -74,7 +74,7 @@ class SearchListComponent extends Component {
         return (
             <div className="SearchResults">
                 <div className="Nav">
-                    {/* <AuthMenu authenticating={this.handleLogIn} /> */}
+                    <AuthMenu authenticating={this.handleLogIn} />
                 </div>
                 <div className="Booklist">
                     {/* <p>List by {this.props.title}</p> */}

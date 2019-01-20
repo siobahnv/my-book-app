@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+// import { bindActionCreators } from 'redux';
 import '../static/App.css';
+
+import { loginUser, logoutUser } from './actions'
 
 import { Link } from "react-router-dom";
 
@@ -10,29 +14,29 @@ class AuthMenu extends Component {
     this.state = {
       username: '',
       password: '',
-      loggedIn: false
+      // loggedIn: false
     }
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-    this.refresh = this.refresh.bind(this);
+    // this.refresh = this.refresh.bind(this);
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount() {
-    this.refresh()
-  }
+  // componentDidMount() {
+  //   this.refresh()
+  // }
 
-  refresh() {
-    fetch('http://localhost:5000/whoami', {credentials: 'include'})
-    .then(response => response.json())
-    .then(data => this.setState( { 
-      username : data.username !== "nobody" ? data.username : "",
-      loggedIn : data.username !== "nobody" ? true : false
-    }))
-    .then(() => this.props.authenticating(this.state.username, this.state.loggedIn))
-    .catch((error) => { /* */});
-  }
+  // refresh() {
+  //   fetch('http://localhost:5000/whoami', {credentials: 'include'})
+  //   .then(response => response.json())
+  //   // .then(data => this.setState( { 
+  //   //   username : data.username !== "nobody" ? data.username : "",
+  //   //   loggedIn : data.username !== "nobody" ? true : false
+  //   // }))
+  //   // .then(() => this.props.authenticating(this.state.username, this.state.loggedIn))
+  //   // .catch((error) => { /* */});
+  // }
 
   handleLogin(e) {
     e.preventDefault();
@@ -42,8 +46,9 @@ class AuthMenu extends Component {
       credentials: 'include',
       method: 'POST',
       body: data,
-    })    
-    .then(() => this.refresh());   
+    }) 
+    .then(data => this.props.loginUser(data))   
+    // .then(() => this.refresh());   
   }
 
   handleLogout(e) {
@@ -51,8 +56,9 @@ class AuthMenu extends Component {
 
     fetch('http://localhost:5000/logout', {
       credentials: 'include'
-    })    
-    .then(() => this.refresh());   
+    }) 
+    .then(() => this.props.logoutUser())   
+    // .then(() => this.refresh());   
   }
 
   handleChange(e) {
@@ -61,7 +67,10 @@ class AuthMenu extends Component {
   }
 
   render() {
-    if (this.state.loggedIn) {
+    // const { dispatch, isAuthenticated, errorMessage } = this.props
+    
+    // if (this.state.loggedIn) {
+    if (this.props.loggedIn) {
       return (
         <div className="Nav">
           <div className="profile">
@@ -87,4 +96,24 @@ class AuthMenu extends Component {
   }
 }
 
-export default AuthMenu;
+const mapStateToProps = (state) => {
+  return {
+      loggedIn: state.loggedIn
+  }
+}
+
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     actions: {
+//       loginUser: bindActionCreators(loginUser, dispatch),
+//       logoutUser: bindActionCreators(logoutUser, dispatch)
+//     }
+//   };
+// }
+
+const mapDispatchToProps = (dispatch) => ({
+  loginUser: (creds) => dispatch(loginUser(creds)),
+  logoutUser: () => dispatch(logoutUser()), 
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthMenu)
