@@ -7,6 +7,7 @@ from secrets import *
 
 from flask import (Flask, make_response, redirect, request, flash,
                    session, jsonify, url_for)
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 
 from flask_cors import CORS, cross_origin
 
@@ -16,6 +17,17 @@ app = Flask(__name__)
 app.secret_key = my_secret_key
 
 cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r"http://localhost:3000" }})
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login' # the login view of your application
+
+##############################################################################
+
+@login_manager.user_loader
+def load_user(user_id):
+    # return User.get(user_id)
+    return User.query.get(user_id)
 
 ##############################################################################
 
@@ -119,6 +131,8 @@ def register():
   new_user_id = new_user.user_id
   session['user_id'] = new_user_id
 
+  login_user(new_user) # TODO: fix user... needs to be unicode...?
+
   # create new booklist
   new_booklist = BookList(user_id=new_user_id)
   db.session.add(new_booklist)
@@ -152,6 +166,8 @@ def login():
     user = user_q.one()
     session['user_id'] = user.user_id
 
+    login_user(user) # TODO: fix user... needs to be unicode...?
+
     if 'temp_booklist' in session:
       new_bl_id = BookList.query.filter(BookList.user_id==user.user_id).first().booklist_id # TODO: fix later...
       books = get_books_from_temp_list(session['temp_booklist'])
@@ -168,6 +184,7 @@ def login():
 @cross_origin()
 def logout():
   """Clears session."""
+  logout_user()
   session.clear()
   return jsonify("logged out")
 

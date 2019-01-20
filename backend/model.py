@@ -23,6 +23,7 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)
     first_name = db.Column(db.String(64), nullable=True)
     last_name = db.Column(db.String(64), nullable=True)
+    authenticated = db.Column(db.Boolean, default=False)
 
     booklists = db.relationship('BookList')
 
@@ -30,6 +31,22 @@ class User(db.Model):
         """Provide helpful representation when printed."""
 
         return f"<User user_id={self.user_id} email={self.email}>"
+    
+    def is_active(self):
+        """True, as all users are active."""
+        return True
+
+    def get_id(self):
+        """Return the user_id (or email) to satisfy Flask-Login's requirements."""
+        return self.user_id
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
 
 class BookList(db.Model):
     """Main book list..."""
