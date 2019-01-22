@@ -34,7 +34,7 @@ class Register extends Component {
         .then(data => this.props.loginUser(data))
         // .then(() => this.props.loggedInCallback())
         .then(() => { this.props.history.goBack();})
-        .catch((error) => {this.setState({isLoading: true, error})});
+        // .catch((error) => {this.setState({isLoading: true, error})});
     }
 
     handleChange(e) {
