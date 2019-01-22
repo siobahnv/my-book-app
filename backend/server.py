@@ -65,7 +65,7 @@ def get_books_from_temp_list(list):
   return Book.query.filter(Book.book_id.in_(list)).all()
 
 def get_blid_from_uid():
-  """Returns a booklist id from based on user id if logged in or temp_user; defaults to 1."""
+  """Returns a booklist id from based on user id if logged in; defaults to None."""
 
   if 'user_id' in session:
     user_id = session['user_id']
@@ -78,15 +78,19 @@ def get_blid_from_uid():
       print("GBFUID UBLID " + str(user_booklist_id))
       return user_booklist_id
     else:
-      return 1 #TODO: fix later
+      new_booklist = BookList(user_id=user_id)
+      db.session.add(new_booklist)
+      db.session.commit()
+      user_booklist_id = BookList.query.filter(BookList.user_id==user_id).first().booklist_id
+      return user_booklist_id
   else:
-    #TODO: no user...
-    if 'temp_booklist_id' in session:
-      temp_booklist_id = session['temp_booklist_id']
-      print("GBFUID no user, bl: " + str(session['temp_booklist']))
-      return temp_booklist_id
-    else:
-      return 1 #TODO: fix later
+    # if 'temp_booklist_id' in session:
+    #   temp_booklist_id = session['temp_booklist_id']
+    #   print("GBFUID no user, bl: " + str(session['temp_booklist']))
+    #   return temp_booklist_id
+    # else:
+    #   return 1 # fix later
+    return None
 
 def get_or_create_book_from_title(title):
   """(Creates and) Returns a book from title."""
@@ -113,11 +117,11 @@ def after(response):
 # def index():
 #   pass
 
-@app.route('/whoami')
-@cross_origin()
-def whoami():
-  """"Returns username if exists or defaults to 'nobody'."""
-  return jsonify ({ 'username' : session.get('username', 'nobody') })
+# @app.route('/whoami')
+# @cross_origin()
+# def whoami():
+#   """"Returns username if exists or defaults to 'nobody'."""
+#   return jsonify ({ 'username' : session.get('username', 'nobody') })
 
 @app.route('/register', methods=['POST'])
 @cross_origin()
@@ -138,7 +142,7 @@ def register():
   new_user_id = new_user.user_id
   session['user_id'] = new_user_id
 
-  login_user(new_user) # TODO: fix user... needs to be unicode...?
+  login_user(new_user) # TODO: fix user...? needs to be unicode...?
 
   # create new booklist
   new_booklist = BookList(user_id=new_user_id)
@@ -221,7 +225,6 @@ def create_book_list():
 def booklist():
   """Returns booklist."""
 
-  # TODO: get "user" from session; for phase 0/1 store booklist_id as well as user_id?
   if 'username' in session:
     user_booklist_id = get_blid_from_uid()
     books = get_books_from_blid(user_booklist_id)
@@ -259,17 +262,21 @@ def booklist():
 def save_book():
   """Saves/adds a book from a list to a list."""
 
-  #TODO: make save send the id instead of the title
+  #TODO: make save send the id instead of the title?
   title = request.data.decode('UTF-8')
 
   # book is created in /createBookList
   new_book_id = Book.query.filter(Book.title==title).first().book_id
 
   if 'user_id' in session:
+    # user_id = session['user_id']
     user_booklist_id = get_blid_from_uid()
-    pair = BookListPair.query.filter(BookListPair.book_id==new_book_id).first()
+    print('saving bk to id list: ', user_booklist_id)
+    pair = BookListPair.query.filter(BookListPair.book_id==new_book_id, BookListPair.booklist_id==user_booklist_id).first()
+    print('pair: ', pair)
     if pair is None:
       blp = BookListPair(booklist_id=user_booklist_id, book_id=new_book_id )
+      print('created booklist pair for blp: ', blp)
       db.session.add(blp)
       db.session.commit()
   elif 'temp_booklist' in session:
@@ -307,7 +314,7 @@ def delete_book(book_id):
       print("can't delete")
 
     session['temp_booklist'] = temp_bl
-    print(session['temp_booklist'])
+    print('deleted from: ', session['temp_booklist'])
   
   return jsonify("book deleted")
 

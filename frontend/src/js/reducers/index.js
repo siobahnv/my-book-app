@@ -8,7 +8,9 @@ const initialState = {
     error: null,
     isFetching: false,
     isAuthenticated: false,
-    user: null
+    user: null,
+    username: null,
+    password: null
 };
 
 function rootReducer(state = initialState, action) {

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import '../static/App.css';
 
 import { loginUser, logoutUser } from './actions'
-import { fetchBooklist } from './actions';
+// import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
 
@@ -12,11 +12,11 @@ class AuthMenu extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      username: '',
-      password: '',
-      // loggedIn: false
-    }
+    // this.state = {
+    //   username: '',
+    //   password: '',
+    //   // loggedIn: false
+    // }
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -67,7 +67,7 @@ class AuthMenu extends Component {
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state.username + " " + this.state.password);
+    console.log(this.props.username + " " + this.props.password);
   }
 
   render() {
@@ -79,7 +79,7 @@ class AuthMenu extends Component {
         <div className="Nav">
           <div className="profile">
             <img src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile"/>
-            {this.state.username}
+            {this.props.username}
             <button className="logoutbutton" onClick={this.handleLogout}>logout</button>
           </div>
         </div>
@@ -89,11 +89,11 @@ class AuthMenu extends Component {
     return (
       <div className="Nav">
         <form id="userlogin" onSubmit={this.handleLogin}>
-          <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.handleChange}></input>
-          <input type="text" name="password" placeholder="password" value={this.state.password} onChange={this.handleChange}></input>
+          <input type="text" name="username" placeholder="username" value={this.props.username} onChange={this.handleChange}></input>
+          <input type="text" name="password" placeholder="password" value={this.props.password} onChange={this.handleChange}></input>
           <button>Login</button>
           {/* <Link to="/register"><button type="button">Register</button></Link> */}
-          <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><button type="button">Register</button></Link>
+          <Link to={{ pathname: '/register', state: { username: this.props.username, password: this.props.password } }}><button type="button">Register</button></Link>
         </form>
       </div>
     );
@@ -103,7 +103,9 @@ class AuthMenu extends Component {
 const mapStateToProps = (state) => {
   return {
       loggedIn: state.loggedIn,
-      booklist: state.booklist
+      username: state.username,
+      password: state.password
+      // booklist: state.booklist
   }
 }
 
@@ -119,7 +121,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   loginUser: (creds) => dispatch(loginUser(creds)),
   logoutUser: () => dispatch(logoutUser()), 
-  fetchBooklist: () => dispatch(fetchBooklist()),
+  // fetchBooklist: () => dispatch(fetchBooklist()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthMenu)
