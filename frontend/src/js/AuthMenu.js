@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import '../static/App.css';
 
 import { loginUser, logoutUser } from './actions'
+import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
 
@@ -47,7 +48,9 @@ class AuthMenu extends Component {
       method: 'POST',
       body: data,
     }) 
-    .then(data => this.props.loginUser(data))   
+    .then(data => this.props.loginUser(data))
+    .then(() => this.props.loggedInCallback())
+    // .then(() => this.props.fetchBooklist())    
     // .then(() => this.refresh());   
   }
 
@@ -57,7 +60,8 @@ class AuthMenu extends Component {
     fetch('http://localhost:5000/logout', {
       credentials: 'include'
     }) 
-    .then(() => this.props.logoutUser())   
+    .then(() => this.props.logoutUser()) 
+    // .then(() => this.props.fetchBooklist())   
     // .then(() => this.refresh());   
   }
 
@@ -98,7 +102,8 @@ class AuthMenu extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      loggedIn: state.loggedIn
+      loggedIn: state.loggedIn,
+      booklist: state.booklist
   }
 }
 
@@ -114,6 +119,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   loginUser: (creds) => dispatch(loginUser(creds)),
   logoutUser: () => dispatch(logoutUser()), 
+  fetchBooklist: () => dispatch(fetchBooklist()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthMenu)

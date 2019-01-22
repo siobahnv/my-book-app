@@ -67,6 +67,7 @@ function rootReducer(state = initialState, action) {
     if (action.type === actions.LOGOUT_SUCCESS) {
         return Object.assign({}, state, {
             ...state,
+            booklist: [],
             loggedIn: false,
             isFetching: true,
             isAuthenticated: false

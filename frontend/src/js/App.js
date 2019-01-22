@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import '../static/App.css';
+import { fetchBooklist } from './actions';
 
 import SearchComponent from './Search';
 import AuthMenu from './AuthMenu';
@@ -18,11 +19,19 @@ class App extends Component {
 
   // }
 
-  handleLogIn(name, isLoggedIn) {
-    this.setState( { 
-      username : name,
-      loggedIn : isLoggedIn
-    });
+  // handleLogIn(name, isLoggedIn) {
+  //   this.setState( { 
+  //     username : name,
+  //     loggedIn : isLoggedIn
+  //   });
+  // }
+
+  fetchBooklist() {
+    fetch('http://localhost:5000/booklist', {
+      credentials: 'include',
+    })
+    .then(response => response.json())
+    .then(data => this.props.fetchBooklist(data))
   }
 
   render() {
@@ -34,9 +43,10 @@ class App extends Component {
         <div className="Nav">
           {/* <AuthMenu authenticating={this.handleLogIn} /> */}
           <AuthMenu
-            isAuthenticated={isAuthenticated}
-            errorMessage={errorMessage}
-            dispatch={dispatch}
+            // isAuthenticated={isAuthenticated}
+            // errorMessage={errorMessage}
+            // dispatch={dispatch}
+            loggedInCallback={() => this.fetchBooklist()}
           />
         </div>
         <div className="App-body">
@@ -48,14 +58,15 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state) {
-
-  const { isAuthenticated, errorMessage } = state
-
+const mapStateToProps = (state) => {
   return {
-    isAuthenticated,
-    errorMessage
+      booklist: state.booklist,
+      loggedIn: state.loggedIn
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  fetchBooklist: (books) => dispatch(fetchBooklist(books))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

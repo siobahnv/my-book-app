@@ -1,5 +1,5 @@
 TODOs:
 
-* Handle duplication/existing books
+* Flush out register flow: should show logged in after registering, needs a go-back button.
 * Look into a library for form validation...
 * If book is already in list, replace Save button with Checkmark icon (and don't let them add it again).
