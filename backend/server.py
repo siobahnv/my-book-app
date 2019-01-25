@@ -1,5 +1,8 @@
 """Woo backend coding!"""
 
+import requests
+import json
+
 from model import User, Book, BookList, BookListPair, connect_to_db, db
 from seed import *
 
@@ -199,15 +202,34 @@ def logout():
   session.clear()
   return jsonify("logged out")
 
-@app.route('/createBookList')
+# testing...
+@app.route('/get-search-results/<title>')
+def get_data(title):
+  return requests.get('https://tastedive.com/api/similar?q=' + title + '&type:books&k=' + MY_TASTEDIVE_API_KEY).content
+
+@app.route('/createBookList/<title>')
 @cross_origin()
-def create_book_list():
+def create_book_list(title):
   """Returns a list of books based on entered book title."""
+
+  print('title ', title)
+  words = title.split(" ")
+  iterable = "+"
+  title = iterable.join(words)
+  print(title)
+  response = requests.get('https://tastedive.com/api/similar?q=' + title + '&type:books&k=' + MY_TASTEDIVE_API_KEY)
+  data = json.loads(response.text)
+  results = data['Similar']['Results']
+  
+  titles = []
+  for item in results:
+    if(item['Type'] == 'book'):
+      titles.append(item['Name'])
 
   # TODO: replace with API
   # temporary list
   searchresults = []
-  titles = ["fake book 1", "fake book 2", "fake book 3"]
+  # titles = ["fake book 1", "fake book 2", "fake book 3"]
 
   for title in titles:
     new_book = get_or_create_book_from_title(title)

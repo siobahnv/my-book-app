@@ -27,7 +27,7 @@ class SearchListComponent extends Component {
     refresh() {
         this.setState({ isLoading: true});
 
-        fetch('http://localhost:5000/createBookList', {
+        fetch('http://localhost:5000/createBookList/' + this.props.title, {
             credentials: 'include',
             method: 'GET'
         })
@@ -64,7 +64,7 @@ class SearchListComponent extends Component {
                         <AuthMenu authenticating={this.handleLogIn} />
                     </div>
                     <div className="Booklist">
-                        <p>You have zero books in your list.</p>
+                        <p>There are zero results.</p>
                     </div>
                     <BackButton/>
                 </div>
@@ -77,7 +77,7 @@ class SearchListComponent extends Component {
                     <AuthMenu authenticating={this.handleLogIn} />
                 </div>
                 <div className="Booklist">
-                    {/* <p>List by {this.props.title}</p> */}
+                    <p>List by {this.props.title}</p>
                     {listBooks}
                 </div>
                 <BackButton/>
