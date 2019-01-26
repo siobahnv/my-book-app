@@ -4,26 +4,31 @@ import '../static/App.css';
 // import { fetchBooklist } from './actions';
 import { loginUser } from './actions'
 import BackButton from './ButtonBackToMain';
-
+import { Button, ButtonGroup } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 
 class Register extends Component {
     constructor(props) {
         super(props);
         // const {username, password} = this.props.location.state
 
-        // this.state = {
-        //     username: username,
-        //     password: password,
-        //     error: null,
-        //     isLoading: false,
-        // };
+        this.state = {
+            username: '',
+            email: '',
+            password: '',
+            error: null,
+            isLoading: false,
+        };
 
         this.handleRegister = this.handleRegister.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
     handleRegister(e) {
+        e.preventDefault();
         const data = new FormData(e.target);
+
+        console.log("What about here?");
 
         fetch('http://localhost:5000/register', {
             credentials: 'include',
@@ -39,7 +44,7 @@ class Register extends Component {
 
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-        console.log(this.props.username + " " + this.props.password);
+        console.log(this.state.username + " " + this.state.password);
       }
 
     render() {
@@ -55,13 +60,17 @@ class Register extends Component {
 
         return (
             <div className="RegisterForm">
-                <form id="userregister" name="register" className="myform" onSubmit={this.handleRegister}>
-                    <input type="text" name="username" placeholder="username" required value={this.props.username} onChange={this.handleChange}></input>
-                    <input type="text" name="email" placeholder="email" required></input>
-                    <input type="text" name="password" placeholder="password" required value={this.props.password} onChange={this.handleChange}></input>
-                    <input type="text" name="confirmPassword" placeholder="confirm password" required value={this.props.password} onChange={this.handleChange}></input>
-                    <button>Register</button>
-                    <BackButton/>
+                <form onSubmit={this.handleRegister}>
+                    <FormGroup>
+                        <FormControl type="text" name="username" placeholder="Username" required value={this.state.username} onChange={this.handleChange} />
+                        <FormControl type="email" name="email" placeholder="Email" required value={this.state.email} onChange={this.handleChange}/>
+                        <FormControl type="password" name="password" placeholder="Password" required value={this.state.password} onChange={this.handleChange} />
+                        <FormControl type="password" name="confirmPassword" placeholder="Confirm password" required value={this.state.password} onChange={this.handleChange} />
+                    </FormGroup>
+                    <ButtonGroup>
+                        <Button type="submit">Register</Button>
+                        <BackButton/>
+                    </ButtonGroup>
                 </form>
             </div>
         );

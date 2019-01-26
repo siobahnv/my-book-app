@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import '../static/App.css';
-
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 
 class SearchComponent extends Component {
   constructor(props) {
@@ -29,15 +30,17 @@ class SearchComponent extends Component {
     return (
       <div className="Search">
         <form>
-          <input 
-            type="text" 
-            className="input" 
-            placeholder="Title..." 
-            value={this.state.input} 
-            onChange={this.handleChange} 
-          />
+          <FormGroup>
+            <FormControl 
+              type="text" 
+              className="input" 
+              placeholder="Title..." 
+              value={this.state.input} 
+              onChange={this.handleChange}
+            />
+          </FormGroup>
           <Link to={{pathname: "/createBookList", state: { title: this.state.input }}}>
-              <button type="button">Create list</button>
+              <Button>Create list</Button>
           </Link>
         </form>
       </div>
