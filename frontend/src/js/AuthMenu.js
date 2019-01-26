@@ -16,6 +16,7 @@ class AuthMenu extends Component {
 
     this.state = {
       username: '',
+      // email: '',
       password: '',
       // loggedIn: false
     }
@@ -42,7 +43,7 @@ class AuthMenu extends Component {
   // }
 
   handleLogin(e) {
-    // e.preventDefault();
+    e.preventDefault();
     const data = new FormData(e.target);
 
     console.log("hitting here?");
@@ -95,7 +96,8 @@ class AuthMenu extends Component {
       <div className="Nav">
         <form onSubmit={this.handleLogin}>
           <FormGroup>
-            <FormControl type="email" placeholder="Email" name="username" value={this.state.username} onChange={this.handleChange} />
+            <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
+            {/* <FormControl type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} /> */}
             <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
           </FormGroup>
           <ButtonGroup>

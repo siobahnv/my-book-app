@@ -165,13 +165,16 @@ def register():
 def login():
   """ Gets user info from form & adds to session, checks if exists...?"""
 
+  # session['username'] = request.form['username']
   session['username'] = request.form['username']
+  # session['email'] = request.form['email']
   session['password'] = request.form['password']
   print("logging in: " + session['username'])
 
   # need to check if in database
   # https://docs.sqlalchemy.org/en/latest/orm/query.html
   user_q = User.query.filter(User.username==session['username'])
+  # user_q = User.query.filter(User.email==session['email'])
   q = user_q.scalar()
   print(q)
 
