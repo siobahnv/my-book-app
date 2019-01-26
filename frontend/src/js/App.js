@@ -39,19 +39,28 @@ class App extends Component {
     const { dispatch, isAuthenticated, errorMessage } = this.props
 
     return (
+
       <div className="App">
-        <div className="Nav">
-          {/* <AuthMenu authenticating={this.handleLogIn} /> */}
-          <AuthMenu
-            // isAuthenticated={isAuthenticated}
-            // errorMessage={errorMessage}
-            // dispatch={dispatch}
-            loggedInCallback={() => this.fetchBooklist()}
-          />
-        </div>
-        <div className="App-body">
-          <BooklistComponent/>
-          <SearchComponent/>
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="App-body">
+                <BooklistComponent/>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="App-body">
+                <SearchComponent/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -7,16 +7,18 @@ import { loginUser, logoutUser } from './actions'
 // import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
+import { Button, ButtonGroup } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 
 class AuthMenu extends Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-    //   username: '',
-    //   password: '',
-    //   // loggedIn: false
-    // }
+    this.state = {
+      username: '',
+      password: '',
+      // loggedIn: false
+    }
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -40,8 +42,10 @@ class AuthMenu extends Component {
   // }
 
   handleLogin(e) {
-    e.preventDefault();
+    // e.preventDefault();
     const data = new FormData(e.target);
+
+    console.log("hitting here?");
 
     fetch('http://localhost:5000/login', {
       credentials: 'include',
@@ -67,7 +71,8 @@ class AuthMenu extends Component {
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(this.props.username + " " + this.props.password);
+    // console.log(this.props.username + " " + this.props.password);
+    console.log(this.state.username, this.state.password);
   }
 
   render() {
@@ -80,7 +85,7 @@ class AuthMenu extends Component {
           <div className="profile">
             <img src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile"/>
             {this.props.username}
-            <button className="logoutbutton" onClick={this.handleLogout}>logout</button>
+            <Button className="logoutbutton" onClick={this.handleLogout}>logout</Button>
           </div>
         </div>
       );
@@ -88,12 +93,15 @@ class AuthMenu extends Component {
 
     return (
       <div className="Nav">
-        <form id="userlogin" onSubmit={this.handleLogin}>
-          <input type="text" name="username" placeholder="username" value={this.props.username} onChange={this.handleChange}></input>
-          <input type="text" name="password" placeholder="password" value={this.props.password} onChange={this.handleChange}></input>
-          <button>Login</button>
-          {/* <Link to="/register"><button type="button">Register</button></Link> */}
-          <Link to={{ pathname: '/register', state: { username: this.props.username, password: this.props.password } }}><button type="button">Register</button></Link>
+        <form onSubmit={this.handleLogin}>
+          <FormGroup>
+            <FormControl type="email" placeholder="Email" name="username" value={this.state.username} onChange={this.handleChange} />
+            <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
+          </FormGroup>
+          <ButtonGroup>
+            <Button bsStyle="primary" type="submit">Login</Button>
+            <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
+          </ButtonGroup>
         </form>
       </div>
     );
@@ -103,8 +111,8 @@ class AuthMenu extends Component {
 const mapStateToProps = (state) => {
   return {
       loggedIn: state.loggedIn,
-      username: state.username,
-      password: state.password
+      // username: state.username,
+      // password: state.password
       // booklist: state.booklist
   }
 }
