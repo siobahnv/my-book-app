@@ -39,7 +39,6 @@ class App extends Component {
     const { dispatch, isAuthenticated, errorMessage } = this.props
 
     return (
-
       <div className="App">
         <div className="container">
           <div className="row">

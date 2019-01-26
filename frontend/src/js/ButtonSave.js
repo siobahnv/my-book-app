@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 // import { addBook } from './actions';
 import '../static/App.css';
+import { Button } from "react-bootstrap";
 
 class SaveButton extends Component {
     constructor(props) {
@@ -47,7 +48,7 @@ class SaveButton extends Component {
         }
 
         return (
-            <button type="button" onClick={this.handleSave}>Save</button>
+            <Button onClick={this.handleSave}>Save</Button>
         );
     }
 }

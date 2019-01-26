@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../static/App.css';
+import { Button } from "react-bootstrap";
 
 class TrashButton extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class TrashButton extends Component {
         }
 
         return (
-            <button type="button" onClick={this.handleTrash}>Trash</button>
+            <Button onClick={this.handleTrash}>Trash</Button>
         );
     }
 }

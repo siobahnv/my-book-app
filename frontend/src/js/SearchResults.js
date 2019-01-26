@@ -59,28 +59,56 @@ class SearchListComponent extends Component {
 
         if (bookresults.length === 0) {
             return (
-                <div className="SearchResults">
-                    <div className="Nav">
-                        <AuthMenu authenticating={this.handleLogIn} />
+                <div className="App">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-12">
+                                <AuthMenu authenticating={this.handleLogIn} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <div className="App-body">
+                                    <div className="Booklist">
+                                        <p>There are zero results.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <BackButton/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="Booklist">
-                        <p>There are zero results.</p>
-                    </div>
-                    <BackButton/>
                 </div>
             );
         }
 
         return (
-            <div className="SearchResults">
-                <div className="Nav">
-                    <AuthMenu authenticating={this.handleLogIn} />
+            <div className="App">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <AuthMenu authenticating={this.handleLogIn} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="App-body">
+                                <div className="Booklist">
+                                    <p>List by {this.props.title}</p>
+                                    {listBooks}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <BackButton/>
+                        </div>
+                    </div>
                 </div>
-                <div className="Booklist">
-                    <p>List by {this.props.title}</p>
-                    {listBooks}
-                </div>
-                <BackButton/>
             </div>
         );
     }
