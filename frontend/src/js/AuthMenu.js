@@ -7,7 +7,7 @@ import { loginUser, logoutUser } from './actions'
 // import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Image } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
 
 class AuthMenu extends Component {
@@ -84,7 +84,7 @@ class AuthMenu extends Component {
       return (
         <div className="Nav">
           <div className="profile">
-            <img src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile"/>
+            <Image src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile" responsive/>
             {this.props.username}
             <Button className="logoutbutton" onClick={this.handleLogout}>logout</Button>
           </div>
