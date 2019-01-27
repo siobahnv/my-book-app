@@ -6,6 +6,7 @@ import AuthMenu from './AuthMenu';
 import BackButton from './ButtonBackToMain';
 import SaveButton from './ButtonSave';
 import { fetchBooks } from './actions';
+import { Panel } from "react-bootstrap";
 
 class SearchListComponent extends Component {
     constructor(props) {
@@ -97,8 +98,10 @@ class SearchListComponent extends Component {
                         <div className="col-12">
                             <div className="App-body">
                                 <div className="Booklist">
-                                    <p>List by {this.props.title}</p>
-                                    {listBooks}
+                                    <Panel>
+                                        <Panel.Heading>List by {this.props.title}</Panel.Heading>
+                                        <Panel.Body>{listBooks}</Panel.Body>
+                                    </Panel>
                                 </div>
                             </div>
                         </div>
