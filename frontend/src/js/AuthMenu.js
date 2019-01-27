@@ -7,7 +7,7 @@ import { loginUser, logoutUser } from './actions'
 // import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, ButtonToolbar, DropdownButton } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 
@@ -96,20 +96,24 @@ class AuthMenu extends Component {
     }
 
     return (
-      <div className="Nav">
-        <form onSubmit={this.handleLogin}>
-          <Col xs={12}>
-            <FormGroup>
-              <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
-              <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
-              <ButtonGroup>
-                <Button bsStyle="primary" type="submit">Login</Button>
-                <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
-              </ButtonGroup>
-            </FormGroup>
-          </Col>
-        </form>
-      </div>
+      <ButtonToolbar>
+        <DropdownButton className="pull-right" bsStyle="default" title="Login" noCaret id="dropdown-no-caret">
+          <div className="Nav">
+            <form onSubmit={this.handleLogin}>
+              <Col xs={12}>
+                <FormGroup>
+                  <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
+                  <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
+                  <ButtonGroup>
+                    <Button bsStyle="primary" type="submit">Submit</Button>
+                    <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
+                  </ButtonGroup>
+                </FormGroup>
+              </Col>
+            </form>
+          </div>
+        </DropdownButton>
+      </ButtonToolbar>
     );
   }
 }

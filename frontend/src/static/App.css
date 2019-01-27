@@ -41,6 +41,10 @@ body {
     border-color: #D49874;
 }
 
+.dropdown-menu {
+    min-width: 400px;
+}
+
 .App {
     text-align: center;
 }
@@ -56,6 +60,12 @@ body {
     text-align: left;
     left: 10px;
 } */
+
+.loginbutton {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
 
 .logoutbutton {
     position: absolute;

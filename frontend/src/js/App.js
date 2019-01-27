@@ -4,7 +4,7 @@ import '../static/App.css';
 import { fetchBooklist } from './actions';
 
 import SearchComponent from './Search';
-import AuthMenu from './AuthMenu';
+import AuthMenu from './AuthMenuCustom';
 import BooklistComponent from './DisplayBooklist';
 
 class App extends Component {
@@ -43,6 +43,7 @@ class App extends Component {
         <div className="container">
           <div className="row nav">
             <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>
+            {/* <AuthMenu loggedInCallback={() => this.fetchBooklist()}/> */}
             {/* <div className="col-md-6 col-md-offset-3">
               <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>
             </div> */}
