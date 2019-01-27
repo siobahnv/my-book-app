@@ -10,6 +10,10 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+.open>.dropdown-menu {
+    display: contents;
+}
+
 .form-control {
     display: inline;
     width: 30%;
@@ -68,7 +72,7 @@ body {
 }
 
 .logoutbutton {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
 }
