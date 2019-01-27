@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import '../static/App.css';
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
+import { fetchBooks } from './actions';
 
 class SearchComponent extends Component {
   constructor(props) {
@@ -14,10 +16,22 @@ class SearchComponent extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({input: event.target.value});
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    fetch('http://localhost:5000/createBookList/' + this.props.title, {
+        credentials: 'include',
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => this.props.fetchBooks(data))
   }
 
   render() {
@@ -29,7 +43,7 @@ class SearchComponent extends Component {
 
     return (
       <div className="Search">
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <FormGroup>
             <FormControl 
               type="text" 
@@ -40,7 +54,7 @@ class SearchComponent extends Component {
             />
           </FormGroup>
           <Link to={{pathname: "/createBookList", state: { title: this.state.input }}}>
-              <Button>Create list</Button>
+              <Button type="submit">Create list</Button>
           </Link>
         </form>
       </div>
@@ -48,4 +62,14 @@ class SearchComponent extends Component {
   }
 }
 
-export default SearchComponent;
+const mapStateToProps = (state) => {
+  return {
+      bookresults: state.bookresults
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchBooks: (books) => dispatch(fetchBooks(books))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchComponent)
