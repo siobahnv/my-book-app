@@ -41,7 +41,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <div className="row">
+          <div className="row nav">
             <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>
             {/* <div className="col-md-6 col-md-offset-3">
               <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>

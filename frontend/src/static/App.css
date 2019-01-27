@@ -3,7 +3,42 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: black;
+    background-color: #2E364D;
+    color: #E9E8EC;
+    font-family: 'PT Mono', monospace;
+    font-family: 'PT Sans', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.form-control {
+    display: inline;
+    width: 30%;
+}
+
+.panel-default>.panel-heading {
+    color: #E9E8EC;
+    background-color: #2E364D;
+    border-color: #2E364D;
+}
+
+.panel-default {
+    border-color: #2E364D;
+    background: #4D526F;
+    opacity: 0.9;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.btn-default {
+    color: #D49874;
+    background-color: #FDFCFD;
+    border-color: #D49874;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #D49874;
+    border-color: #D49874;
 }
 
 .App {
@@ -16,14 +51,14 @@ body {
     margin: 10px;
 }
 
-.profile {
+
+/* .profile {
     text-align: left;
     left: 10px;
-}
+} */
 
-
-/* .logoutbutton {
+.logoutbutton {
     position: absolute;
     top: 10px;
     right: 10px;
-} */
+}

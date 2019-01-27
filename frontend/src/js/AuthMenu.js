@@ -7,7 +7,7 @@ import { loginUser, logoutUser } from './actions'
 // import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Image } from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 
@@ -85,9 +85,11 @@ class AuthMenu extends Component {
       return (
         <div className="Nav">
           <div className="profile">
-            <Image src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile" responsive/>
-            {this.props.username}
-            <Button className="logoutbutton" onClick={this.handleLogout}>logout</Button>
+            <Col xs={12}>
+              {/* <Image src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile" responsive/> */}
+              {this.state.username}
+              <Button className="logoutbutton" onClick={this.handleLogout}>logout</Button>
+            </Col>
           </div>
         </div>
       );
@@ -96,18 +98,15 @@ class AuthMenu extends Component {
     return (
       <div className="Nav">
         <form onSubmit={this.handleLogin}>
-          <Col xs={6}>
+          <Col xs={12}>
             <FormGroup>
               <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
-              {/* <FormControl type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.handleChange} /> */}
               <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
+              <ButtonGroup>
+                <Button bsStyle="primary" type="submit">Login</Button>
+                <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
+              </ButtonGroup>
             </FormGroup>
-          </Col>
-          <Col xs={6}>
-            <ButtonGroup>
-              <Button bsStyle="primary" type="submit">Login</Button>
-              <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
-            </ButtonGroup>
           </Col>
         </form>
       </div>
