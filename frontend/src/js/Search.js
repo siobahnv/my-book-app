@@ -34,7 +34,7 @@ class SearchComponent extends Component {
             <FormControl 
               type="text" 
               className="input" 
-              placeholder="Title..." 
+              placeholder="Search for books related to (enter a title)..." 
               value={this.state.input} 
               onChange={this.handleChange}
             />
