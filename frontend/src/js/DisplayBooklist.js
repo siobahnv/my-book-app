@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import '../static/App.css';
 import { fetchBooklist } from './actions';
 import TrashButton from './ButtonTrash';
+import { Panel } from "react-bootstrap";
 
 class BooklistComponent extends Component {
     constructor(props) {
@@ -42,8 +43,10 @@ class BooklistComponent extends Component {
 
             return (
                 <div className="Booklist">
-                    <p>Best List Evar</p>
-                    {listBooks}
+                    <Panel>
+                        <Panel.Heading>Best List Evar</Panel.Heading>
+                        <Panel.Body>{listBooks}</Panel.Body>
+                    </Panel>
                 </div>
             );
         }
@@ -66,7 +69,9 @@ class BooklistComponent extends Component {
 
         return (
             <div className="Booklist">
-                <p>You have zero books in your list.</p>
+                <Panel>
+                    <Panel.Body>You have zero books in your list.</Panel.Body>
+                </Panel>
             </div>
         );
 

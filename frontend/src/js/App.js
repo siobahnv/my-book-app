@@ -42,21 +42,22 @@ class App extends Component {
       <div className="App">
         <div className="container">
           <div className="row">
-            <div className="col-12">
+            <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>
+            {/* <div className="col-md-6 col-md-offset-3">
               <AuthMenu loggedInCallback={() => this.fetchBooklist()}/>
-            </div>
+            </div> */}
           </div>
           <div className="row">
             <div className="col-12">
               <div className="App-body">
-                <BooklistComponent/>
+                <SearchComponent/>
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col-12">
               <div className="App-body">
-                <SearchComponent/>
+                <BooklistComponent/>
               </div>
             </div>
           </div>
