@@ -71,7 +71,9 @@ class SearchListComponent extends Component {
                             <div className="col-12">
                                 <div className="App-body">
                                     <div className="Booklist">
-                                        <p>There are zero results.</p>
+                                        <Panel>
+                                            <Panel.Body>There are zero results.</Panel.Body>
+                                        </Panel>
                                     </div>
                                 </div>
                             </div>

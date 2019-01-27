@@ -45,6 +45,12 @@ body {
     border-color: #D49874;
 }
 
+.btn-toolbar .btn,
+.btn-toolbar .btn-group,
+.btn-toolbar .input-group {
+    float: right;
+}
+
 .dropdown-menu {
     min-width: 400px;
 }
