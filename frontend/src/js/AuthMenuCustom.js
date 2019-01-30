@@ -10,8 +10,8 @@ import { loginUser, logoutUser } from './actions'
 // import { fetchBooklist } from './actions';
 
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
-import { FormGroup, FormControl } from "react-bootstrap";
+import { Button, ButtonGroup, ButtonToolbar, Dropdown } from "react-bootstrap";
+import { FormGroup, FormControl, InputGroup } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Panel } from "react-bootstrap";
 
@@ -158,20 +158,24 @@ class AuthMenuCustom extends Component {
                 <CustomToggle bsRole="toggle"><Button className="loginbutton" bsStyle="primary" type="submit">Toggle Login</Button></CustomToggle>
 
                 <CustomMenu bsRole="menu">
-                    <Panel>
+                    <Panel className="LoginPanel">
                         <Panel.Body>
-                            <form onSubmit={this.handleLogin}>
-                            <Col xs={12}>
-                                <FormGroup>
-                                <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
-                                <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
-                                <ButtonGroup>
-                                    <Button bsStyle="primary" type="submit">Submit</Button>
-                                    <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
-                                </ButtonGroup>
-                                </FormGroup>
-                            </Col>
-                            </form>
+                            <ButtonToolbar>
+                                <form onSubmit={this.handleLogin}>
+                                    <Col xs={12}>
+                                    <FormGroup>
+                                        <InputGroup>
+                                            <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
+                                            <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
+                                        </InputGroup>
+                                        <ButtonGroup>
+                                            <Button bsStyle="primary" type="submit">Submit</Button>
+                                            <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
+                                        </ButtonGroup>
+                                    </FormGroup>
+                                    </Col>
+                                </form>
+                            </ButtonToolbar>
                         </Panel.Body>
                     </Panel>
                 </CustomMenu>
