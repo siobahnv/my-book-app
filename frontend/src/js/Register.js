@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import '../static/App.css';
+import '../static/Register.css';
 // import { fetchBooklist } from './actions';
 import { loginUser } from './actions'
 import BackButton from './ButtonBackToMain';
@@ -59,19 +60,30 @@ class Register extends Component {
         // }
 
         return (
-            <div className="RegisterForm">
-                <form onSubmit={this.handleRegister}>
-                    <FormGroup>
-                        <FormControl type="text" name="username" placeholder="Username" required value={this.state.username} onChange={this.handleChange} />
-                        <FormControl type="email" name="email" placeholder="Email" required value={this.state.email} onChange={this.handleChange}/>
-                        <FormControl type="password" name="password" placeholder="Password" required value={this.state.password} onChange={this.handleChange} />
-                        <FormControl type="password" name="confirmPassword" placeholder="Confirm password" required value={this.state.password} onChange={this.handleChange} />
-                    </FormGroup>
-                    <ButtonGroup>
-                        <Button type="submit">Register</Button>
-                        <BackButton/>
-                    </ButtonGroup>
-                </form>
+            <div className="App">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="RegisterForm signup-screen">
+                                <form onSubmit={this.handleRegister}>
+                                    <FormGroup controlId="formBasicUsername">
+                                        <FormControl type="text" name="username" placeholder="Username" required value={this.state.username} onChange={this.handleChange} />
+                                    </FormGroup>
+                                    <FormGroup controlId="formBasicEmail">
+                                        <FormControl type="email" name="email" placeholder="Email" required value={this.state.email} onChange={this.handleChange}/>
+                                    </FormGroup>
+                                    <FormGroup controlId="formBasicPassword">
+                                        <FormControl type="password" name="password" placeholder="Password" required value={this.state.password} onChange={this.handleChange} />
+                                    </FormGroup>
+                                    <ButtonGroup>
+                                        <Button type="submit">Register</Button>
+                                        <BackButton/>
+                                    </ButtonGroup>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -91,4 +103,4 @@ const mapDispatchToProps = (dispatch) => ({
     // fetchBooklist: (books) => dispatch(fetchBooklist(books))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register)
