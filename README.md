@@ -1,4 +1,13 @@
 
+## Stack
+
+* React.js 
+* Redux
+* Babel
+* Webpack
+* Flask
+
+
 ## Starting Guide
 
 ### Backend
