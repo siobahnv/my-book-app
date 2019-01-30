@@ -18,6 +18,8 @@ body {
 .form-control {
     display: inline;
     width: 40%;
+    border: 1px solid #D49874;
+    color: #D49874;
 }
 
 .panel-default>.panel-heading {
@@ -36,18 +38,18 @@ body {
 
 .btn-default {
     color: #D49874;
-    background-color: #FDFCFD;
+    background-color: #E9E8EC;
     border-color: #D49874;
 }
 
 .btn-primary {
-    color: #fff;
+    color: #E9E8EC;
     background-color: #D49874;
     border-color: #D49874;
 }
 
 .btn-primary-dark {
-    color: #fff;
+    color: #E9E8EC;
     background-color: #2E364D;
     border-color: #2E364D;
 }
