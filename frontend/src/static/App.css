@@ -46,6 +46,12 @@ body {
     border-color: #D49874;
 }
 
+.btn-primary-dark {
+    color: #fff;
+    background-color: #2E364D;
+    border-color: #2E364D;
+}
+
 .btn-toolbar .btn,
 .btn-toolbar .btn-group,
 .btn-toolbar .input-group {

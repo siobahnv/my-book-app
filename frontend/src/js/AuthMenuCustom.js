@@ -169,7 +169,7 @@ class AuthMenuCustom extends Component {
                                             <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
                                         </InputGroup>
                                         <ButtonGroup>
-                                            <Button bsStyle="primary" type="submit">Submit</Button>
+                                            <Button bsStyle="primary-dark" type="submit">Sign On</Button>
                                             <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
                                         </ButtonGroup>
                                     </FormGroup>
