@@ -64,7 +64,7 @@ class Register extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <div className="RegisterForm signup-screen">
+                            <div className="RegisterForm signup-screen center">
                                 <form onSubmit={this.handleRegister}>
                                     <FormGroup controlId="formBasicUsername">
                                         <FormControl type="text" name="username" placeholder="Username" required value={this.state.username} onChange={this.handleChange} />

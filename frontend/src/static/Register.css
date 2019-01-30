@@ -2,10 +2,11 @@ body {
     min-height: 100%;
 }
 
-.container {
+.RegisterForm {
     max-width: 400px;
-    max-height: 100px;
+    /* max-height: 100px; */
     margin-top: 10px;
+    align-self: center;
 }
 
 .signup-screen {
@@ -16,4 +17,10 @@ body {
     opacity: 0.9;
     box-shadow: 0 1px 6px rgba(0, 0, 0, .3);
     color: #E9E8EC;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
 }

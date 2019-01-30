@@ -83,3 +83,9 @@ body {
     top: 10px;
     right: 10px;
 }
+
+.container {
+    max-width: 800px;
+    /* max-height: 100px; */
+    margin-top: 10px;
+}
