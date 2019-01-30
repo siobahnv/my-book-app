@@ -88,7 +88,7 @@ class AuthMenu extends Component {
             <Col xs={12}>
               {/* <Image src={'https://via.placeholder.com/30'} alt="ProfilePic" className="img-profile" responsive/> */}
               {this.state.username}
-              <Button className="logoutbutton" onClick={this.handleLogout}>logout</Button>
+              <Button className="logoutbutton" onClick={this.handleLogout}>Logout</Button>
             </Col>
           </div>
         </div>

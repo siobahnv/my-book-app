@@ -48,7 +48,7 @@ class SaveButton extends Component {
         }
 
         return (
-            <Button bsSize="xsmall" onClick={this.handleSave}>Save</Button>
+            <Button bsSize="xsmall" onClick={this.handleSave}>Add</Button>
         );
     }
 }

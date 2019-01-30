@@ -52,10 +52,10 @@ class SearchComponent extends Component {
               value={this.state.input} 
               onChange={this.handleChange}
             />
+            <Link to={{pathname: "/createBookList", state: { title: this.state.input }}}>
+                <Button type="submit">Search</Button>
+            </Link>
           </FormGroup>
-          <Link to={{pathname: "/createBookList", state: { title: this.state.input }}}>
-              <Button type="submit">Create list</Button>
-          </Link>
         </form>
       </div>
     );

@@ -77,6 +77,11 @@ body {
     margin: 10px;
 }
 
+.Search {
+    min-height: 150px;
+    margin-top: 100px;
+}
+
 
 /* .profile {
     text-align: left;
