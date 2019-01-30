@@ -34,7 +34,7 @@ class TrashButton extends Component {
         }
 
         return (
-            <Button bsSize="xsmall" onClick={this.handleTrash}>Remove</Button>
+            <Button className="TrashBtn" bsSize="xsmall" onClick={this.handleTrash}>Remove</Button>
         );
     }
 }

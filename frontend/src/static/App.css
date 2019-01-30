@@ -8,6 +8,7 @@ body {
     font-family: 'PT Mono', monospace;
     font-family: 'PT Sans', sans-serif;
     font-family: 'Open Sans', sans-serif;
+    font-size: medium;
 }
 
 .open>.dropdown-menu {
@@ -80,6 +81,10 @@ body {
 .Search {
     min-height: 150px;
     margin-top: 100px;
+}
+
+.TrashBtn {
+    margin-left: 20px;
 }
 
 
