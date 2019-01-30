@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import '../static/App.css';
 
-import AuthMenu from './AuthMenu';
+import AuthMenuCustom from './AuthMenuCustom';
 import BackButton from './ButtonBackToMain';
 import SaveButton from './ButtonSave';
 import { fetchBooks } from './actions';
@@ -64,7 +64,7 @@ class SearchListComponent extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-12">
-                                <AuthMenu authenticating={this.handleLogIn} />
+                                <AuthMenuCustom authenticating={this.handleLogIn} />
                             </div>
                         </div>
                         <div className="row">
@@ -93,7 +93,7 @@ class SearchListComponent extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <AuthMenu authenticating={this.handleLogIn} />
+                            <AuthMenuCustom authenticating={this.handleLogIn} />
                         </div>
                     </div>
                     <div className="row">

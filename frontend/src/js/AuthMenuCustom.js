@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
 import { Col } from "react-bootstrap";
+import { Panel } from "react-bootstrap";
 
 class CustomToggle extends React.Component {
     constructor(props, context) {
@@ -84,7 +85,7 @@ class CustomMenu extends React.Component {
     }
 }
 
-class AuthMenu extends Component {
+class AuthMenuCustom extends Component {
     constructor(props) {
       super(props);
   
@@ -157,19 +158,24 @@ class AuthMenu extends Component {
                 <CustomToggle bsRole="toggle"><Button className="loginbutton" bsStyle="primary" type="submit">Toggle Login</Button></CustomToggle>
 
                 <CustomMenu bsRole="menu">
-                    <form onSubmit={this.handleLogin}>
-                    <Col xs={12}>
-                        <FormGroup>
-                        <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
-                        <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
-                        <ButtonGroup>
-                            <Button bsStyle="primary" type="submit">Submit</Button>
-                            <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
-                        </ButtonGroup>
-                        </FormGroup>
-                    </Col>
-                    </form>
+                    <Panel>
+                        <Panel.Body>
+                            <form onSubmit={this.handleLogin}>
+                            <Col xs={12}>
+                                <FormGroup>
+                                <FormControl type="text" placeholder="Username" name="username" value={this.state.username} onChange={this.handleChange} />
+                                <FormControl type="password" placeholder="Password" name="password" value={this.state.password} onChange={this.handleChange} />
+                                <ButtonGroup>
+                                    <Button bsStyle="primary" type="submit">Submit</Button>
+                                    <Link to={{ pathname: '/register', state: { username: this.state.username, password: this.state.password } }}><Button>Register</Button></Link>
+                                </ButtonGroup>
+                                </FormGroup>
+                            </Col>
+                            </form>
+                        </Panel.Body>
+                    </Panel>
                 </CustomMenu>
+
             </Dropdown>
         );
     }
@@ -199,4 +205,4 @@ const mapStateToProps = (state) => {
     // fetchBooklist: () => dispatch(fetchBooklist()),
   });
   
-  export default connect(mapStateToProps, mapDispatchToProps)(AuthMenu)
+  export default connect(mapStateToProps, mapDispatchToProps)(AuthMenuCustom)
