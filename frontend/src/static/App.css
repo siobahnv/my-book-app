@@ -71,6 +71,11 @@ body {
     border-bottom-right-radius: 4px;
 }
 
+.btn-group-xs>.btn,
+.btn-xs {
+    margin-left: 10px;
+}
+
 .dropdown-menu {
     min-width: 400px;
 }
