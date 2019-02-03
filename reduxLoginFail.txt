@@ -1,0 +1,355 @@
+diff --git a/backend/requirements.txt b/backend/requirements.txt
+index 6f04c5e..61be343 100644
+--- a/backend/requirements.txt
++++ b/backend/requirements.txt
+@@ -4,6 +4,7 @@ Click==7.0
+ factory-boy==2.11.1
+ Faker==1.0.0
+ Flask==1.0.2
++Flask-API==1.1
+ Flask-Cors==3.0.7
+ Flask-Login==0.4.1
+ Flask-SQLAlchemy==2.3.2
+diff --git a/backend/server.py b/backend/server.py
+index 4cc5f1c..e62f913 100644
+--- a/backend/server.py
++++ b/backend/server.py
+@@ -2,17 +2,16 @@
+ 
+ import requests
+ import json
+-
+ from model import User, Book, BookList, BookListPair, connect_to_db, db
+ from seed import *
+-
+ from secrets import *
+-
+ from flask import (Flask, make_response, redirect, request, flash,
+-                   session, jsonify, url_for)
++                   session, jsonify, url_for, abort)
+ from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
+-
+ from flask_cors import CORS, cross_origin
++from flask_api import status
++from flask import make_response
++
+ 
+ app = Flask(__name__)
+ 
+@@ -136,28 +135,39 @@ def register():
+   session['password'] = request.form['password']
+   print("registering: " + session['username'])
+ 
+-  # create new user
+-  user = User(username=session['username'], email=session['email'], password=session['password'])
+-  db.session.add(user)
+-  db.session.commit()
++  # TODO: check if user exists...
++  # need to check if in database
++  # https://docs.sqlalchemy.org/en/latest/orm/query.html
++  user_q = User.query.filter(User.username==session['username'])
++  # user_q = User.query.filter(User.email==session['email'])
++  q = user_q.scalar()
++  print(q)
+ 
+-  new_user = User.query.filter(User.username==session['username']).one()
+-  new_user_id = new_user.user_id
+-  session['user_id'] = new_user_id
++  if q is not None:
++    return jsonify("User exists...")
++  else:
++    # create new user
++    user = User(username=session['username'], email=session['email'], password=session['password'])
++    db.session.add(user)
++    db.session.commit()
+ 
+-  login_user(new_user) # TODO: fix user...? needs to be unicode...?
++    new_user = User.query.filter(User.username==session['username']).one()
++    new_user_id = new_user.user_id
++    session['user_id'] = new_user_id
+ 
+-  # create new booklist
+-  new_booklist = BookList(user_id=new_user_id)
+-  db.session.add(new_booklist)
+-  db.session.commit()
+-  # add temporary booklist to new booklist
+-  if 'temp_booklist' in session:
+-    new_bl_id = BookList.query.filter(BookList.user_id==new_user_id).first().booklist_id
+-    books = get_books_from_temp_list(session['temp_booklist'])
+-    add_books_to_list(new_bl_id, books)
++    login_user(new_user) # TODO: fix user...? needs to be unicode...?
++
++    # create new booklist
++    new_booklist = BookList(user_id=new_user_id)
++    db.session.add(new_booklist)
++    db.session.commit()
++    # add temporary booklist to new booklist
++    if 'temp_booklist' in session:
++      new_bl_id = BookList.query.filter(BookList.user_id==new_user_id).first().booklist_id
++      books = get_books_from_temp_list(session['temp_booklist'])
++      add_books_to_list(new_bl_id, books)
+ 
+-  return jsonify("registered successfully")
++    return jsonify("registered successfully")
+ 
+ #TODO: fix App.js + components to handle None case
+ @app.route('/login', methods=['POST'])
+@@ -179,7 +189,7 @@ def login():
+   print(q)
+ 
+   if q is not None:
+-    # get user id?
++    # user exists
+     user = user_q.one()
+     session['user_id'] = user.user_id
+ 
+@@ -190,12 +200,15 @@ def login():
+       books = get_books_from_temp_list(session['temp_booklist'])
+       add_books_to_list(new_bl_id, books)
+ 
+-    return jsonify("logged in successfully")
++    return make_response(jsonify("Login Success"), 202)
++    # return jsonify("logged in successfully"), status.HTTP_202_ACCEPTED
+   else:
+     # else return to register?
+     # flash("Please register.")
+     # session['user_id'] = 1 # TODO: fix later
+-    return jsonify("login not successful")
++    # return jsonify("User does not exist"), status.HTTP_401_UNAUTHORIZED
++    # return make_response(jsonify("Login Failed"), 401)
++    return abort(401)
+ 
+ @app.route('/logout')
+ @cross_origin()
+@@ -229,10 +242,7 @@ def create_book_list(title):
+     if(item['Type'] == 'book'):
+       titles.append(item['Name'])
+ 
+-  # TODO: replace with API
+-  # temporary list
+   searchresults = []
+-  # titles = ["fake book 1", "fake book 2", "fake book 3"]
+ 
+   for title in titles:
+     new_book = get_or_create_book_from_title(title)
+diff --git a/frontend/src/js/AuthMenuCustom.js b/frontend/src/js/AuthMenuCustom.js
+index f825f05..3d8b792 100644
+--- a/frontend/src/js/AuthMenuCustom.js
++++ b/frontend/src/js/AuthMenuCustom.js
+@@ -6,7 +6,7 @@ import { connect } from "react-redux";
+ // import { bindActionCreators } from 'redux';
+ import '../static/App.css';
+ 
+-import { loginUser, logoutUser } from './actions'
++import { loginUser, logoutUser, requestLogin, receiveLogin, loginError } from './actions'
+ // import { fetchBooklist } from './actions';
+ 
+ import { Link } from "react-router-dom";
+@@ -102,21 +102,61 @@ class AuthMenuCustom extends Component {
+       this.handleChange = this.handleChange.bind(this)
+     }
+ 
+-    handleLogin(e) {
+-        e.preventDefault();
+-        const data = new FormData(e.target);
++    // handleLogin(e) {
++    //     e.preventDefault();
++    //     const data = new FormData(e.target);
++
++    //     console.log("hitting here?");
++
++    //     fetch('http://localhost:5000/login', {
++    //     credentials: 'include',
++    //     method: 'POST',
++    //     body: data,
++    //     }) 
++    //     .then(data => this.props.loginUser(data))
++    //     .then(() => this.props.loggedInCallback())
++    //     // .then(() => this.props.fetchBooklist())    
++    //     // .then(() => this.refresh());   
++    // }
++
++    // Handle HTTP errors since fetch won't.
++    // handleErrors(response) {
++    //     if (!response.ok) {
++    //         throw Error(response.statusText);
++    //     }
++    //     return response;
++    // }
++
++    handleLogin(event) {
++        event.preventDefault();
++        const data = new FormData(event.target);
+ 
+         console.log("hitting here?");
+ 
++        this.props.requestLogin();
+         fetch('http://localhost:5000/login', {
+-        credentials: 'include',
+-        method: 'POST',
+-        body: data,
++            credentials: 'include',
++            method: 'POST',
++            body: data,
+         }) 
+-        .then(data => this.props.loginUser(data))
+-        .then(() => this.props.loggedInCallback())
+-        // .then(() => this.props.fetchBooklist())    
+-        // .then(() => this.refresh());   
++        .then(() => console.log("Also hitting here..."))
++        // .then(() => this.props.loggedInCallback())
++        // .then(handleErrors)
++        // .then(res => res.json())
++        // .then(data => this.props.receiveLogin(data))
++        // .then(data => {
++        //   dispatch(this.props.receiveLogin(data));
++        // })
++        // .then(function(response) {
++        //     return response.json();
++        //   })
++        // .then(function(myJson) {
++        //     console.log(JSON.stringify(myJson))
++        // })
++        // .then(response => response.json())
++        .catch(error => this.props.loginError(error))
++        .then(data => this.props.receiveLogin(data))
++        .then(response => console.log('Success:', JSON.stringify(response)));
+     }
+ 
+     handleLogout(e) {
+@@ -205,7 +245,10 @@ const mapStateToProps = (state) => {
+   
+   const mapDispatchToProps = (dispatch) => ({
+     loginUser: (creds) => dispatch(loginUser(creds)),
+-    logoutUser: () => dispatch(logoutUser()), 
++    logoutUser: () => dispatch(logoutUser()),
++    requestLogin: () => dispatch(requestLogin()),
++    receiveLogin: (creds) => dispatch(receiveLogin(creds)),
++    loginError: (error) => dispatch(loginError(error))
+     // fetchBooklist: () => dispatch(fetchBooklist()),
+   });
+   
+diff --git a/frontend/src/js/DisplayBooklist.js b/frontend/src/js/DisplayBooklist.js
+index 6e5ec38..0c78eb6 100644
+--- a/frontend/src/js/DisplayBooklist.js
++++ b/frontend/src/js/DisplayBooklist.js
+@@ -9,11 +9,11 @@ class BooklistComponent extends Component {
+     constructor(props) {
+         super(props);
+ 
+-        // this.state = {
+-        //     books: [],
+-        //     error: null,
+-        //     isLoading: false
+-        // };
++        this.state = {
++            books: [],
++            error: null,
++            isLoading: false
++        };
+ 
+         this.refresh = this.refresh.bind(this)
+     }
+@@ -25,10 +25,13 @@ class BooklistComponent extends Component {
+     refresh() {
+         this.setState({ isLoading: true});
+ 
++        console.log("Hitting booklist api...");
++
+         fetch('http://localhost:5000/booklist', {
+             credentials: 'include',
+         })
+-        .then(response => response.json())
++        // .then(response => response.json())
++        .then(data => console.log(data))
+         .then(data => this.props.fetchBooklist(data))
+         // .then(data => this.setState({ books: data, isLoading: false }))
+         // .catch((error) => {this.setState({isLoading: true, error})});
+@@ -39,7 +42,8 @@ class BooklistComponent extends Component {
+         const { booklist } = this.props;
+ 
+         if (booklist && booklist.length !== 0) {
+-            const listBooks = booklist.map((b) => <li key={b.book_id}>{b.title} <TrashButton book_id={b.book_id} refreshBooklist={this.refresh}/></li>);
++            // const listBooks = booklist.map((b) => <li key={b.book_id}>{b.title} <TrashButton book_id={b.book_id} refreshBooklist={this.refresh}/></li>);
++            const listBooks = [];
+ 
+             return (
+                 <div className="Booklist">
+diff --git a/frontend/src/js/actions/index.js b/frontend/src/js/actions/index.js
+index 9958992..e3f0ae8 100644
+--- a/frontend/src/js/actions/index.js
++++ b/frontend/src/js/actions/index.js
+@@ -12,32 +12,34 @@ export function fetchBooklist(payload) {
+ //     return { type: actions.ADD_BOOK, payload }
+ // }
+ 
+-// export function requestLogin(creds) {
+-//     return {
+-//       type: actions.LOGIN_REQUEST,
+-//       isFetching: true,
+-//       isAuthenticated: false,
+-//       creds
+-//     }
+-//   }
++export function requestLogin(creds) {
++    return {
++        type: actions.LOGIN_REQUEST,
++        isFetching: true,
++        isAuthenticated: false,
++        creds
++    }
++  }
+   
+-// export function receiveLogin(user) {
+-//     return {
+-//       type: actions.LOGIN_SUCCESS,
+-//       isFetching: false,
+-//       isAuthenticated: true,
+-//       id_token: user.id_token
+-//     }
+-//   }
++export function receiveLogin(user) {
++    return {
++        type: actions.LOGIN_SUCCESS,
++        isFetching: false,
++        isAuthenticated: true,
++        //   id_token: user.id_token
++        loggedIn: true,
++        user
++    }
++  }
+   
+-// export function loginError(message) {
+-//     return {
+-//       type: actions.LOGIN_FAILURE,
+-//       isFetching: false,
+-//       isAuthenticated: false,
+-//       message
+-//     }
+-//   }
++export function loginError(message) {
++    return {
++        type: actions.LOGIN_FAILURE,
++        isFetching: false,
++        isAuthenticated: false,
++        message
++    }
++  }
+ 
+ export function loginUser(creds) {
+     return {
+diff --git a/frontend/src/js/reducers/index.js b/frontend/src/js/reducers/index.js
+index 30f0cd4..bef8b07 100644
+--- a/frontend/src/js/reducers/index.js
++++ b/frontend/src/js/reducers/index.js
+@@ -9,8 +9,8 @@ const initialState = {
+     isFetching: false,
+     isAuthenticated: false,
+     user: null,
+-    username: null,
+-    password: null
++    // username: null,
++    // password: null
+ };
+ 
+ function rootReducer(state = initialState, action) {
