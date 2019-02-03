@@ -136,28 +136,39 @@ def register():
   session['password'] = request.form['password']
   print("registering: " + session['username'])
 
-  # create new user
-  user = User(username=session['username'], email=session['email'], password=session['password'])
-  db.session.add(user)
-  db.session.commit()
+  # need to check if in database
+  # https://docs.sqlalchemy.org/en/latest/orm/query.html
+  user_q = User.query.filter(User.username==session['username'])
+  # user_q = User.query.filter(User.email==session['email'])
+  q = user_q.scalar()
+  print('query login: ', q)
 
-  new_user = User.query.filter(User.username==session['username']).one()
-  new_user_id = new_user.user_id
-  session['user_id'] = new_user_id
+  if q is not None:
+    # user exists?
+    return jsonify("register not successful"), status.HTTP_400_BAD_REQUEST
+  else:
+    # create new user
+    user = User(username=session['username'], email=session['email'], password=session['password'])
+    db.session.add(user)
+    db.session.commit()
 
-  login_user(new_user) # TODO: fix user...? needs to be unicode...?
+    new_user = User.query.filter(User.username==session['username']).one()
+    new_user_id = new_user.user_id
+    session['user_id'] = new_user_id
 
-  # create new booklist
-  new_booklist = BookList(user_id=new_user_id)
-  db.session.add(new_booklist)
-  db.session.commit()
-  # add temporary booklist to new booklist
-  if 'temp_booklist' in session:
-    new_bl_id = BookList.query.filter(BookList.user_id==new_user_id).first().booklist_id
-    books = get_books_from_temp_list(session['temp_booklist'])
-    add_books_to_list(new_bl_id, books)
+    login_user(new_user) # TODO: fix user...? needs to be unicode...?
 
-  return jsonify("registered successfully")
+    # create new booklist
+    new_booklist = BookList(user_id=new_user_id)
+    db.session.add(new_booklist)
+    db.session.commit()
+    # add temporary booklist to new booklist
+    if 'temp_booklist' in session:
+      new_bl_id = BookList.query.filter(BookList.user_id==new_user_id).first().booklist_id
+      books = get_books_from_temp_list(session['temp_booklist'])
+      add_books_to_list(new_bl_id, books)
+
+    return jsonify("registered successfully")
 
 #TODO: fix App.js + components to handle None case
 @app.route('/login', methods=['POST'])

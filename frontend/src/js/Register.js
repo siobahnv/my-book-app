@@ -19,6 +19,7 @@ class Register extends Component {
             password: '',
             error: null,
             isLoading: false,
+            showRegFailMessage: false
         };
 
         this.handleRegister = this.handleRegister.bind(this)
@@ -36,10 +37,19 @@ class Register extends Component {
             method: 'POST',
             body: data
         })
-        .then(response => response.json())
-        .then(data => this.props.loginUser(data))
+        .then(response => {
+            response.json()
+            if (response.status == 400) {
+                this.setState({ showRegFailMessage: true });
+            } else {
+                this.props.loginUser(response);
+                this.setState({ showRegFailMessage: true });
+                this.props.history.goBack();
+            }
+        })
+        // .then(data => this.props.loginUser(data))
         // .then(() => this.props.loggedInCallback())
-        .then(() => { this.props.history.goBack();})
+        // .then(() => { this.props.history.goBack();})
         // .catch((error) => {this.setState({isLoading: true, error})});
     }
 
@@ -59,12 +69,18 @@ class Register extends Component {
         //     return <p>Loading...</p>
         // }
 
+        let registerMenuMessage = "Please register."
+        if (this.state.showRegFailMessage == true) {
+            registerMenuMessage = "Register unsuccessful, user already exists. Please try again."
+        }
+
         return (
             <div className="App">
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
                             <div className="RegisterForm signup-screen center">
+                                <div className="App">{registerMenuMessage}</div>
                                 <form onSubmit={this.handleRegister}>
                                     <FormGroup controlId="formBasicUsername">
                                         <FormControl type="text" name="username" placeholder="Username" required value={this.state.username} onChange={this.handleChange} />
