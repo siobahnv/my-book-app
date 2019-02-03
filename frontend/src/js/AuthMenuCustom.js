@@ -94,6 +94,7 @@ class AuthMenuCustom extends Component {
         // email: '',
         password: '',
         // loggedIn: false
+        showRegisterMessage: false
       }
   
       this.handleLogin = this.handleLogin.bind(this);
@@ -113,8 +114,18 @@ class AuthMenuCustom extends Component {
         method: 'POST',
         body: data,
         }) 
-        .then(data => this.props.loginUser(data))
-        .then(() => this.props.loggedInCallback())
+        .then(response => {
+            console.log('response', response)
+            if (response.status == 200){
+                this.props.loginUser(response);
+                this.props.loggedInCallback();
+                this.setState({ showRegisterMessage : false })
+            } else if (response.status == 401){
+                this.setState({ showRegisterMessage : true });
+            }
+        })
+        // .then(data => this.props.loginUser(data))
+        // .then(() => this.props.loggedInCallback())
         // .then(() => this.props.fetchBooklist())    
         // .then(() => this.refresh());   
     }
@@ -153,6 +164,11 @@ class AuthMenuCustom extends Component {
             );
         }
 
+        let authMenuMessage = "Please login."
+        if (this.state.showRegisterMessage == true) {
+            authMenuMessage = "Login unsuccessful. Please try again or register."
+        }
+
         return (
             <Dropdown id="dropdown-custom-menu">
                 <CustomToggle bsRole="toggle"><Button className="loginbutton" bsStyle="primary" type="submit">Toggle Login</Button></CustomToggle>
@@ -160,6 +176,7 @@ class AuthMenuCustom extends Component {
                 <CustomMenu bsRole="menu">
                     <Panel className="LoginPanel">
                         <Panel.Body>
+                            <div className="App">{authMenuMessage}</div>
                             <ButtonToolbar>
                                 <form onSubmit={this.handleLogin}>
                                     <Col xs={12}>

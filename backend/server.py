@@ -11,7 +11,7 @@ from secrets import *
 from flask import (Flask, make_response, redirect, request, flash,
                    session, jsonify, url_for)
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
-
+from flask_api import status
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
@@ -176,7 +176,7 @@ def login():
   user_q = User.query.filter(User.username==session['username'])
   # user_q = User.query.filter(User.email==session['email'])
   q = user_q.scalar()
-  print(q)
+  print('query login: ', q)
 
   if q is not None:
     # get user id?
@@ -190,12 +190,15 @@ def login():
       books = get_books_from_temp_list(session['temp_booklist'])
       add_books_to_list(new_bl_id, books)
 
+    print(jsonify("logged in successfully"))
     return jsonify("logged in successfully")
   else:
     # else return to register?
     # flash("Please register.")
     # session['user_id'] = 1 # TODO: fix later
-    return jsonify("login not successful")
+    print('are we getting here? login failed?')
+    print(jsonify("login not successful"))
+    return jsonify("login not successful"), status.HTTP_401_UNAUTHORIZED
 
 @app.route('/logout')
 @cross_origin()
