@@ -5,15 +5,14 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 // import { bindActionCreators } from 'redux';
 import '../static/App.css';
-
 import { loginUser, logoutUser } from './actions'
 // import { fetchBooklist } from './actions';
-
 import { Link } from "react-router-dom";
 import { Button, ButtonGroup, ButtonToolbar, Dropdown } from "react-bootstrap";
 import { FormGroup, FormControl, InputGroup } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Panel } from "react-bootstrap";
+import { MY_URL } from './secrets';
 
 class CustomToggle extends React.Component {
     constructor(props, context) {
@@ -109,7 +108,7 @@ class AuthMenuCustom extends Component {
 
         console.log("hitting here?");
 
-        fetch('http://localhost:5000/login', {
+        fetch(MY_URL + '/login', {
         credentials: 'include',
         method: 'POST',
         body: data,
@@ -133,7 +132,7 @@ class AuthMenuCustom extends Component {
     handleLogout(e) {
         e.preventDefault();
 
-        fetch('http://localhost:5000/logout', {
+        fetch(MY_URL + '/logout', {
             credentials: 'include'
         }) 
         .then(() => this.props.logoutUser()) 

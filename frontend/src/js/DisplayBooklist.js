@@ -4,6 +4,7 @@ import '../static/App.css';
 import { fetchBooklist } from './actions';
 import TrashButton from './ButtonTrash';
 import { Panel } from "react-bootstrap";
+import { MY_URL } from './secrets';
 
 class BooklistComponent extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class BooklistComponent extends Component {
     refresh() {
         this.setState({ isLoading: true});
 
-        fetch('http://localhost:5000/booklist', {
+        fetch(MY_URL + '/booklist', {
             credentials: 'include',
         })
         .then(response => response.json())

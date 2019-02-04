@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 // import { addBook } from './actions';
 import '../static/App.css';
 import { Button } from "react-bootstrap";
+import { MY_URL } from './secrets';
 
 class SaveButton extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class SaveButton extends Component {
         this.setState({status: true});
         const title = this.props.title;
 
-        fetch('http://localhost:5000/book/save', {
+        fetch(MY_URL + '/book/save', {
             credentials: 'include',
             method: 'POST',
             body: title,

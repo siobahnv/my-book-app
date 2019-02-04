@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import '../static/App.css';
-
 import AuthMenuCustom from './AuthMenuCustom';
 import BackButton from './ButtonBackToMain';
 import SaveButton from './ButtonSave';
 import { fetchBooks } from './actions';
 import { Panel } from "react-bootstrap";
+import { MY_URL } from './secrets';
 
 class SearchListComponent extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class SearchListComponent extends Component {
     refresh() {
         this.setState({ isLoading: true});
 
-        fetch('http://localhost:5000/createBookList/' + this.props.title, {
+        fetch(MY_URL + '/createBookList/' + this.props.title, {
             credentials: 'include',
             method: 'GET'
         })

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../static/App.css';
 import { Button } from "react-bootstrap";
+import { MY_URL } from './secrets';
 
 class TrashButton extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class TrashButton extends Component {
       }
 
     handleTrash = (e) => {
-        fetch('http://localhost:5000/book/' + this.props.book_id + '/delete', {
+        fetch(MY_URL + '/book/' + this.props.book_id + '/delete', {
             credentials: 'include',
         })
         .then(response => response.json())

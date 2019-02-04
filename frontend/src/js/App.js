@@ -6,6 +6,7 @@ import { fetchBooklist } from './actions';
 import SearchComponent from './Search';
 import AuthMenuCustom from './AuthMenuCustom';
 import BooklistComponent from './DisplayBooklist';
+import { MY_URL } from './secrets';
 
 class App extends Component {
 
@@ -27,7 +28,7 @@ class App extends Component {
   // }
 
   fetchBooklist() {
-    fetch('http://localhost:5000/booklist', {
+    fetch(MY_URL + '/booklist', {
       credentials: 'include',
     })
     .then(response => response.json())

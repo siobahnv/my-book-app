@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
 import { fetchBooks } from './actions';
+import { MY_URL } from './secrets';
 
 class SearchComponent extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class SearchComponent extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    fetch('http://localhost:5000/createBookList/' + this.props.title, {
+    fetch(MY_URL + '/createBookList/' + this.props.title, {
         credentials: 'include',
         method: 'GET'
     })

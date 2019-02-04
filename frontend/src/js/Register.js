@@ -7,6 +7,7 @@ import { loginUser } from './actions'
 import BackButton from './ButtonBackToMain';
 import { Button, ButtonGroup } from "react-bootstrap";
 import { FormGroup, FormControl } from "react-bootstrap";
+import { MY_URL } from './secrets';
 
 class Register extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class Register extends Component {
 
         console.log("What about here?");
 
-        fetch('http://localhost:5000/register', {
+        fetch(MY_URL + '/register', {
             credentials: 'include',
             method: 'POST',
             body: data
