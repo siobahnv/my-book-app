@@ -6,7 +6,7 @@ import os
 from model import User, Book, BookList, BookListPair, connect_to_db, db
 # from seed import *
 # from secrets import *
-from flask import (Flask, make_response, redirect, request, flash,
+from flask import (Flask, make_response, redirect, request, flash, render_template,
                    session, jsonify, url_for)
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
 from flask_api import status
@@ -116,10 +116,10 @@ def after(response):
   response.headers.add('Access-Control-Allow-Credentials', 'true')
   return response
 
-# @app.route('/')
-# @cross_origin()
-# def index():
-#   pass
+@app.route('/')
+@cross_origin()
+def index():
+  return render_template("index.html")
 
 # @app.route('/whoami')
 # @cross_origin()
