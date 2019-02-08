@@ -14,7 +14,10 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from flask_api import status
 from flask_cors import CORS, cross_origin
 
-app = Flask(__name__)
+template_dir = os.path.abspath('../frontend/build')
+static_dir   = os.path.abspath('../frontend/build/static')
+app = Flask(__name__, static_folder=static_dir,template_folder=template_dir)
+# app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = my_secret_key
@@ -364,8 +367,9 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # In case tables haven't been created, create them
-    db.create_all()
+    # db.create_all()
     # Import different types of data
-    load_data()
+    # load_data()
 
-    app.run(port=5000, host='0.0.0.0')
+    # app.run(port=5000, host='0.0.0.0')
+    app.run(host="0.0.0.0")
