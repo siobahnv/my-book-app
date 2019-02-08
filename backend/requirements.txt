@@ -4,6 +4,7 @@ Click==7.0
 factory-boy==2.11.1
 Faker==1.0.0
 Flask==1.0.2
+Flask-API==1.1
 Flask-Cors==3.0.7
 Flask-Login==0.4.1
 Flask-SQLAlchemy==2.3.2

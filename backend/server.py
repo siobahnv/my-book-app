@@ -4,8 +4,8 @@ import requests
 import json
 import os
 from model import User, Book, BookList, BookListPair, connect_to_db, db
-from seed import *
-from secrets import *
+# from seed import *
+# from secrets import *
 from flask import (Flask, make_response, redirect, request, flash,
                    session, jsonify, url_for)
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
@@ -17,6 +17,7 @@ app = Flask(__name__, static_folder=static_dir,template_folder=template_dir)
 # app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
+my_secret_key = os.environ["my_secret_key"]
 app.secret_key = my_secret_key
 
 cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r"http://localhost:3000" }})
