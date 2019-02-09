@@ -40,7 +40,7 @@ class Register extends Component {
         })
         .then(response => {
             response.json()
-            if (response.status == 400) {
+            if (response.status === 400) {
                 this.setState({ showRegFailMessage: true });
             } else {
                 this.props.loginUser(response);
@@ -71,7 +71,7 @@ class Register extends Component {
         // }
 
         let registerMenuMessage = "Please register."
-        if (this.state.showRegFailMessage == true) {
+        if (this.state.showRegFailMessage === true) {
             registerMenuMessage = "Register unsuccessful, user already exists. Please try again."
         }
 
