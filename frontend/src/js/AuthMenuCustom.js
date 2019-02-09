@@ -115,11 +115,11 @@ class AuthMenuCustom extends Component {
         }) 
         .then(response => {
             console.log('response', response)
-            if (response.status == 200){
+            if (response.status === 200){
                 this.props.loginUser(response);
                 this.props.loggedInCallback();
                 this.setState({ showRegisterMessage : false })
-            } else if (response.status == 401){
+            } else if (response.status === 401){
                 this.setState({ showRegisterMessage : true });
             }
         })
@@ -164,7 +164,7 @@ class AuthMenuCustom extends Component {
         }
 
         let authMenuMessage = "Please login."
-        if (this.state.showRegisterMessage == true) {
+        if (this.state.showRegisterMessage === true) {
             authMenuMessage = "Login unsuccessful. Please try again or register."
         }
 
