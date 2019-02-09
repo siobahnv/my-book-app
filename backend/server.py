@@ -21,6 +21,8 @@ app = Flask(__name__, static_folder=static_dir,template_folder=template_dir)
 my_secret_key = os.environ["my_secret_key"]
 app.secret_key = my_secret_key
 
+MY_TASTEDIVE_API_KEY = os.environ["MY_TASTEDIVE_API_KEY"]
+
 cors = CORS(app, resources={r"/*": { r"supports_credentials":True, r"origins": r"http://localhost:3000" }})
 
 login_manager = LoginManager()
