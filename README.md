@@ -1,65 +1,76 @@
+##### App by **Heather Ransome**, read more about the developer on her [LinkedIn]<br>
+###### Deployed Site: [bestlistevar.me]<br>
 
-## Stack
+## Table of Contents
+* [Technologies Used](#techused)
+* [Features](#features)
+* [Setup Installation](#setup)
 
-* React.js 
-* Redux
-* Babel
-* Webpack
-* Flask
+## <a name="techused"></a>Technologies Used
+__Backend:__ Python, Flask, PostgreSQL, SQLAlchemy<br>
+__Frontend:__ Javascript, React, Redux, Bootstrap<br>
+__APIs:__ TasteDive<br>
+__Deployed:__ AWS Lightsail<br>
+
+## <a name="features"></a>Features
+# TODO
 
 
-## Starting Guide
+## ## <a name="setup"></a>Setup Installation
 
 ### Backend
 
-1. Create isolated Python environments:
-
+1. Create a virtual environment:
    ```
-   virtualenv env
-   ```
-
-2. Enter this environment:
-
-   ```
-   source env/bin/activate
+   $ virtualenv env
    ```
 
-3. Install python packages:
-
+2. Activate the virtual environment:
    ```
-   pip3 install -r requirements.txt
+   $ source env/bin/activate
+   ```
+
+3. Install dependencies:
+   ```
+   $ pip3 install -r requirements.txt
    ```
 
 4. Create database:
-
    ```
-   createdb booklists
+   $ createdb booklists
    ```
 
-5. Start backend:
+5. Add your own [TasteDive API Key](https://tastedive.com/read/api) to a `secrets.sh` file. Your file should look like:
+```
+export my_secret_key="[YOUR-KEY]"
+export MY_TASTEDIVE_API_KEY="[YOUR-KEY]"
+```
 
+6. Source your secrets.sh file:
+```
+$ source secrets.sh
+```
+
+7. Start backend:
    ```
-   python3 server.py
+   $ python3 server.py
    ```
 
 ### Frontend
 
 1. Go to frontend folder:
-
   ```
-  cd frontend/
+  $ cd frontend/
   ```
 
 2. Install packages:
-
   ```
-  npm install
+  $ npm install
   ```
 
 3. Start frontend:
-
   ```
-  npm run start
+  $ npm run start
   ```
 
 4. Open [http://localhost:3000/](http://localhost:3000/)
