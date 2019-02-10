@@ -1,5 +1,5 @@
-##### App by **Heather Ransome**, read more about the developer on her [LinkedIn]<br>
-###### Deployed Site: [www.bestlistevar.me]<br>
+##### App by **Heather Ransome**, read more about the developer on her [LinkedIn](https://www.linkedin.com/in/siobahnv/)<br>
+###### Deployed Site: <www.bestlistevar.me><br>
 
 ## Table of Contents
 * [Technologies Used](#techused)
