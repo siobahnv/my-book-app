@@ -19,7 +19,7 @@ __Deployed:__ AWS Lightsail<br>
 ## <a name="wireframe"></a>Wireframe
 ![wireframe](https://github.com/siobahnv/my-book-app/blob/master/static/HB%20Project_%20Phase%201.jpeg) 
 
-## ## <a name="setup"></a>Setup and Installation
+## <a name="setup"></a>Setup and Installation
 
 ### Backend
 
