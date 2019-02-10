@@ -24,40 +24,40 @@ __Deployed:__ AWS Lightsail<br>
 ### Backend
 
 1. Create a virtual environment:
-   ```
-   $ virtualenv env
-   ```
+  ```
+  $ virtualenv env
+  ```
 
 2. Activate the virtual environment:
-   ```
-   $ source env/bin/activate
-   ```
+  ```
+  $ source env/bin/activate
+  ```
 
 3. Install dependencies:
-   ```
-   $ pip3 install -r requirements.txt
-   ```
+  ```
+  $ pip3 install -r requirements.txt
+  ```
 
 4. Create database:
-   ```
-   $ createdb booklists
-   ```
+  ```
+  $ createdb booklists
+  ```
 
 5. Add your own [TasteDive API Key](https://tastedive.com/read/api) to a `secrets.sh` file. Your file should look like:
-```
-export my_secret_key="[YOUR-KEY]"
-export MY_TASTEDIVE_API_KEY="[YOUR-KEY]"
-```
+  ```
+  export my_secret_key="[YOUR-KEY]"
+  export MY_TASTEDIVE_API_KEY="[YOUR-KEY]"
+  ```
 
 6. Source your secrets.sh file:
-```
-$ source secrets.sh
-```
+  ```
+  $ source secrets.sh
+  ```
 
 7. Start backend:
-   ```
-   $ python3 server.py
-   ```
+  ```
+  $ python3 server.py
+  ```
 
 ### Frontend
 
