@@ -17,7 +17,7 @@ __Deployed:__ AWS Lightsail<br>
 # TODO
 
 ## <a name="wireframe"></a>Wireframe
-![Phase 1 Wireframe](/static/HB Project_ Phase 1.jpeg) 
+![wireframe](/static/HB Project_ Phase 1.jpeg) 
 
 ## ## <a name="setup"></a>Setup and Installation
 
