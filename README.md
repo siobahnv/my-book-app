@@ -1,9 +1,10 @@
 ##### App by **Heather Ransome**, read more about the developer on her [LinkedIn]<br>
-###### Deployed Site: [bestlistevar.me]<br>
+###### Deployed Site: [www.bestlistevar.me]<br>
 
 ## Table of Contents
 * [Technologies Used](#techused)
 * [Features](#features)
+* [Wireframe](#wireframe)
 * [Setup Installation](#setup)
 
 ## <a name="techused"></a>Technologies Used
@@ -15,6 +16,8 @@ __Deployed:__ AWS Lightsail<br>
 ## <a name="features"></a>Features
 # TODO
 
+## <a name="wireframe"></a>Wireframe
+![alt text](../static/HB Project_ Phase 1.jpeg "Phase 1 Wireframe") 
 
 ## ## <a name="setup"></a>Setup Installation
 
